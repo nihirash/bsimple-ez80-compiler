@@ -1,0 +1,12 @@
+SRC := src
+CROSSBIN := bsc
+DEPS := $(wildcard $(SRC)/*.c $(SRC)/*.h)
+SRCS := $(wildcard $(SRC)/*.c)
+C := cc
+
+
+$(CROSSBIN): $(DEPS)
+	$(C) $(SRCS) -o $(CROSSBIN)
+
+clean:
+	rm $(CROSSBIN)
