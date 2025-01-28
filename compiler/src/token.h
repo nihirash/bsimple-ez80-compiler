@@ -1,7 +1,7 @@
 #include "config.h"
 
-extern char current_token[MAX_TOKEN_SIZE];
-
+/// @brief      Reads token to "current_token" buffer and returns type from enum
+/// @return     Enum type of token
 char get_token();
 
 enum {
@@ -48,3 +48,6 @@ enum {
     SingleQuote,
     DoubleQuote,
 };
+
+
+extern char current_token[];

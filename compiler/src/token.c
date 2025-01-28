@@ -9,7 +9,7 @@ char current_token[MAX_TOKEN_SIZE];
 
 char is_alpha(char c)
 {
-    return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';
+    return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_';
 }
 
 char is_digit(char c)
@@ -32,8 +32,9 @@ char is_symbol(char c)
         c == '"' || c == '!' || c == '~' || c == '$';
 }
 
-char is_hex(char c) {
-    return is_digit(c) || (c >= 'a' && c <='f') || (c >= 'A' && c <= 'F'); 
+char is_hex(char c)
+{
+    return is_digit(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
 }
 
 void skip_spaces()
@@ -42,8 +43,8 @@ void skip_spaces()
 
     while (1) {
 
-	if (eof) 
-	    return;
+        if (eof)
+            return;
 
         c = get_chr();
         if (!is_space(c)) {
@@ -53,7 +54,7 @@ void skip_spaces()
     }
 }
 
-char read_hex() 
+char read_hex()
 {
     int pos = 0, num = 0;
     char c;
@@ -65,7 +66,7 @@ char read_hex()
         } else {
             current_token[pos++] = 0;
             poked = c;
-            
+
             num = strtol(current_token, NULL, 16);
             sprintf(current_token, "%i", num);
 
@@ -214,13 +215,13 @@ char process_symbols()
 char get_token()
 {
     char c;
-    
-    if (eof) 
-	return Unknown;
+
+    if (eof)
+        return Unknown;
 
     current_token[0] = 0;
 
-checks:
+  checks:
     skip_spaces();
     c = get_chr();
     if (c == '#') {

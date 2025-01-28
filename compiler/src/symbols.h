@@ -1,7 +1,5 @@
 #include "config.h"
 
-#define SYM_TABLE_SIZE 50
-
 enum {
     Keyword,
     Constant,
@@ -16,6 +14,7 @@ enum {
     K_Label,
     K_Goto,
     K_Var,
+    K_Import,
 };
 
 typedef struct {
@@ -25,9 +24,7 @@ typedef struct {
 } Symbol;
 
 
-extern int symbol_table_back;
 extern int symbol_table_pos;
-extern int local_vars_count;
 
 /// @brief Register symbol in table
 /// @param s    string with keywords

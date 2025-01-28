@@ -55,5 +55,5 @@ void error(char code)
 
     close_writer();
 
-    exit(0);
+    exit(1);
 }

@@ -14,6 +14,6 @@ enum {
     UNIMPLEMENTED
 };
 
-/// @brief Error happens
+/// @brief              Stop execution and print error message
 /// @param error 
 void error(char error);

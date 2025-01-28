@@ -8,9 +8,7 @@
 
 Symbol symbols[SYM_TABLE_SIZE];
 
-int symbol_table_back = 0;
 int symbol_table_pos = 0;
-int local_vars_count = 0;
 
 void register_symbol(char *s, char k, char t)
 {

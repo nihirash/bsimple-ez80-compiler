@@ -8,7 +8,7 @@ int label_cnt = 0;
 char l_prefix[MAX_TOKEN_SIZE] = "l";
 char new_label[MAX_TOKEN_SIZE];
 
-char buf[128];
+char buf[OUTPUT_BUFFER_SIZE];
 
 void build_label()
 {
@@ -26,8 +26,7 @@ void write_global_var(char *name, int size)
 
 void fun_head(char *name)
 {
-    sprintf(buf, "\n_%s:\n\tpush ix\n\tld ix, 0\n\tadd ix, sp\n",
-            name);
+    sprintf(buf, "\n_%s:\n\tpush ix\n\tld ix, 0\n\tadd ix, sp\n", name);
 
     write_code(buf);
 }
@@ -44,8 +43,7 @@ void allocate_vars(int size)
     if (!size)
         return;
 
-    sprintf(buf, "\n\tld hl, -%u\n\tadd hl, sp\n\tld sp, hl\n\n",
-            size);
+    sprintf(buf, "\n\tld hl, -%u\n\tadd hl, sp\n\tld sp, hl\n\n", size);
 
     write_code(buf);
 }
@@ -234,8 +232,7 @@ void mul_ptr()
         write_code("\add hl, hl\n");
         return;
     case 3:
-        write_code
-            ("\tpush hl\n\tpop bc\n\tadd hl, hl\n\tadd hl, bc\n");
+        write_code("\tpush hl\n\tpop bc\n\tadd hl, hl\n\tadd hl, bc\n");
         return;
     default:
         error(UNIMPLEMENTED);

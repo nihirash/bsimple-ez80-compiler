@@ -14,6 +14,7 @@ void init_keyword_table()
 {
     register_keyword("label", K_Label);
     register_keyword("goto", K_Goto);
+    register_keyword("import", K_Import);
     register_keyword("while", K_While);
     register_keyword("if", K_If);
     register_keyword("var", K_Var);
@@ -23,20 +24,43 @@ void init_keyword_table()
 int main(int argc, char **argv)
 {
     char filename[MAX_TOKEN_SIZE];
+    char *pos;
+    char *base, *tmp;
 
     printf
-        ("B Simple compiler v%s\r\n(c) 2025 Aleksandr Sharikhin\r\n\r\n",
+        ("B Simple compiler v%s\n(c) 2025 Aleksandr Sharikhin\n\n",
          VERSION);
 
 
     if (argc < 2) {
-        printf("\r\n Usage:\r\n %s <input-file>\r\n\r\nPlease don't specify extension for input file\r\n", argv[0]);
+        printf("\n Usage:\n %s <input-file>\n", argv[0]);
 
         return 0;
     }
 
+    pos = strstr(argv[1], ".bs");
+
+    if (pos != 0) {
+        *pos = 0;
+    }
+
+    base = argv[1];
+
     sprintf(filename, "%s.bs", argv[1]);
-    sprintf(l_prefix, "%s", argv[1]);
+
+    while (strstr(base, "/") || strstr(base, "\\")) {
+        tmp = strstr(base, "/");
+
+        if (tmp) {
+            base = tmp + 1;
+        } else {
+            tmp = strstr(base, "\\");
+            if (tmp)
+                base = tmp + 1;
+        }
+    }
+
+    sprintf(l_prefix, "%s", base);
 
     init_keyword_table();
     init_reader(filename);

@@ -2,4 +2,9 @@ bin
 obj
 tmp/
 *.bin
+test.bs
+test.s
 compiler/bsc
+stdlib/startup.i
+stdlib/src/*.s
+examples/*.s

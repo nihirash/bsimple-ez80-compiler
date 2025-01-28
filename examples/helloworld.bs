@@ -1,0 +1,11 @@
+import "../stdlib/startup.i"
+
+main() {
+    var s;
+    # S will contain pointer to string literal
+    s = "Example string";
+
+    printf("Hello, world!\r\n");
+
+    printf("Formatter: %%d: %d %%o: %o %%x: %x %%s: %s\r\n", 123, -5656, -123, s);
+}

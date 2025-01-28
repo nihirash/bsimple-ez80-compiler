@@ -1,0 +1,17 @@
+import "../stdlib/startup.i"
+
+main() {
+    var name[10];
+
+    puts("Hello!\r\nWhat is your name? ");
+
+    if readline(&name, 30) == 27 {
+        puts("\r\nOuch! Escaped!\r\n");
+
+        return;
+    }
+
+    printf("\r\nHello, %s!\r\n", &name);
+    
+    getc();
+}

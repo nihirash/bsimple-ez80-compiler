@@ -1,0 +1,13 @@
+# Change sign of number
+neg(n) {
+    return 0 - n;
+}
+
+# Absolute value
+abs(n) {
+    if n < 0 {
+        return neg(n);
+    }
+
+    return n;
+}

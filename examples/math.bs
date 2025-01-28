@@ -1,0 +1,14 @@
+import "../stdlib/startup.i"
+
+sum(x, y) {
+    return x + y;
+}
+
+main() 
+{
+    var x, y, r;
+    x = 10;
+    y = sum(x, 15);
+    
+    printf("Result is %d\r\n", sum(x, sum(y, 55)) / 5);
+}
