@@ -11,3 +11,9 @@ abs(n) {
 
     return n;
 }
+
+rand_range(min, max) {
+    var range;
+    range = max - min;
+    return rand() % range + min;
+}

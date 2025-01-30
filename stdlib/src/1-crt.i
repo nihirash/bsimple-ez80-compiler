@@ -303,3 +303,34 @@ __cmp:
   push bc
   pop af
   ret
+
+
+_rand:
+  ld hl, (@state)
+  add hl, bc
+  add hl, de
+  add hl, sp
+
+  rrca
+  xor h
+  xor l
+  xor e
+  xor b
+  rrca
+
+  ld e, a
+  ld a, r
+  xor e
+
+  xor h
+  ld h, a
+
+  rr l
+  rrca 
+  xor c
+  xor e
+  ld l, a
+  ld (@state), hl
+  ret
+@state:
+  dl $F7A2E3

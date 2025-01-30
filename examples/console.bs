@@ -1,7 +1,8 @@
 import "../stdlib/startup.i"
 
 main() {
-    var name[10];
+    var name[10], i, key;
+
 
     puts("Hello!\r\nWhat is your name? ");
 
@@ -12,6 +13,16 @@ main() {
     }
 
     printf("\r\nHello, %s!\r\n", &name);
-    
-    getc();
+
+    i = 0;
+    while i < 50 {
+        printf("Random number: %d %d\r\n", rand_range(-1000, 1000), rand());
+
+        i = i + 1;
+    }
+
+    puts("\r\nPress key to exit\r\n");
+    key = getc();
+
+    printf("You pressed key with code 0x%x\r\n", key);
 }

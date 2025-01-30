@@ -47,24 +47,25 @@ char rewind_buffer(unsigned int rewind_ptr)
     buff_left();
     while (1) {
         buff_left();
-
         if (buffer[buf_ptr] == ')') {
             par++;
             buff_left();
             while (1) {
-                buff_left();
+                if (buffer[buf_ptr] == '(') {
+                    par--;
+                    buff_left();
+                    
+                    if (!par)
+                        break;
+                }
+                
                 if (buffer[buf_ptr] == ')') {
                     par++;
                     buff_left();
                 }
-                if (buffer[buf_ptr] == '(') {
-                    par--;
-                    buff_left();
-
-                    if (!par)
-                        break;
-                }
+                buff_left();
             }
+            buff_left();
         }
 
         if (buffer[buf_ptr] == '"') {
@@ -86,7 +87,6 @@ char rewind_buffer(unsigned int rewind_ptr)
             }
             buff_left();
         }
-
 
 
         if (buf_ptr == rewind_ptr) {
