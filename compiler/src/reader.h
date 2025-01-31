@@ -29,8 +29,10 @@ int get_current_line();
 char rewind_buffer(unsigned int rewind_ptr);
 
 /// @brief              Stores current pointer in output buffer
-extern unsigned int buf_ptr;
+extern int buf_ptr;
 /// @brief              Flag that indicates is buffered mode enabled or we should continue processing file
 extern char is_buffered;
 /// @brief              Buffer - size can be configured in config.h
 extern char buffer[];
+
+void clean_buffer();

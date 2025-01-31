@@ -1,4 +1,4 @@
-# Formatted print(on screen)
+# Formatted print(on printer)
 #
 # Support next formatters: 
 #  * %s - string
@@ -7,7 +7,7 @@
 #  * %o - oct
 #  * %b - binary
 #  * %x - hex
-printf(ptr, x1) {
+printerf(ptr, x1) {
 	var cur_char, p;
 
 	cur_char = [*ptr -> 0] & 255;
@@ -15,7 +15,7 @@ printf(ptr, x1) {
 
 	while cur_char {
 		if cur_char != '%' {
-			putc(cur_char);
+			printer_putc(cur_char);
 		}
 
 		if cur_char == '%' {
@@ -23,38 +23,38 @@ printf(ptr, x1) {
 			cur_char = [*ptr -> 0] & 255;
 
 			if cur_char == 's' {
-				puts([*p->0]);
+				printer_puts([*p->0]);
 				p = p + 3;
 			}
 
 			if cur_char == 'c' {
-				putc([*p->0] & 255);
+				printer_putc([*p->0] & 255);
 				p = p + 3;
 			}
 
 			if cur_char == 'd' {
-				printn([*p->0], 10);
+				printern([*p->0], 10);
 				p = p + 3;
 			}
 
 			if cur_char == 'o' {
-				printn([*p->0], 8);
+				printern([*p->0], 8);
 				p = p + 3;
 			}
 
 			if cur_char == 'b' {
-				printn([*p->0], 2);
+				printern([*p->0], 2);
 				p = p + 3;
 			}
 
 			if cur_char == 'x' {
-				printx([*p->0]);
+				printerx([*p->0]);
 
 				p = p + 3;
 			}
 
 			if cur_char == '%' {
-				putc('%');
+				printer_putc('%');
 			}
 
 		}
@@ -64,34 +64,34 @@ printf(ptr, x1) {
 	}
 }
 
-# Print number in specified base
+# Print(on printer) number in specified base
 # n is number to print
 # b is base of number
-printn(n, b) {
+printern(n, b) {
   var a;
 
   if n == 16 {
-    return printx(n);
+    return printerx(n);
   }
 	
   if n < 0 {
     n = neg(n);
-    putc('-');
+    printer_putc('-');
   }
 
   a = n / b;
 
   if a {
-    printn(a, b);
+    printern(a, b);
   }
 
-  putc( 
+  printer_putc( 
     n % b + '0'
   );
 }
 
-# Prints number as hex value
-printx(n) {
+# Prints(on printer) number as hex value
+printerx(n) {
 	var a, p;
 
 	p = "0123456789ABCDEF";
@@ -99,10 +99,10 @@ printx(n) {
 	a = udiv(n, 16);
 
 	if a {
-		printx(a);
+		printerx(a);
 	}
 
 	p = n & 15 + p;
 
-	putc( [ *p -> 0 ] );
+	printer_putc( [ *p -> 0 ] );
 }

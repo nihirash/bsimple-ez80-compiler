@@ -12,8 +12,23 @@ abs(n) {
     return n;
 }
 
+# Swap values in two pointers
+swap(ptr1, ptr2) {
+    var t;
+    t = [*ptr1->0];
+    [*ptr1->0] = [*ptr2->0];
+    [*ptr2->0] = t;
+}
+
+# Get random number in specified range
 rand_range(min, max) {
     var range;
+
+    # just fool proof check
+    if min > max {
+        swap(&min, &max);
+    }
+
     range = max - min;
     return rand() % range + min;
 }

@@ -16,7 +16,7 @@ Compiler can be built with almost any standard C compiler(for native Agon versio
 
  * No priority in calculations
 
- * Code requires optimiser
+ * Need make optimiser(peephole?!) 
 
 ## License 
 

@@ -11,9 +11,9 @@ FILE *fp;
 char poked = 0;
 char eof = 0;
 
-char buffer[RING_BUFFER_SIZE];
+char buffer[ARGS_BUFFER_SIZE];
 
-unsigned int buf_ptr;
+int buf_ptr;
 char is_buffered;
 
 
@@ -32,10 +32,27 @@ void init_reader(char *filename)
         error(OPEN_FILE_ISSUE);
 }
 
+void clean_buffer() {
+    for (int i=0;i<ARGS_BUFFER_SIZE;i++)
+        buffer[i] = 0;
+}
+
 void buff_left()
 {
     buf_ptr--;
-    buf_ptr %= RING_BUFFER_SIZE;
+    
+    if (buf_ptr < 0) {
+        buf_ptr = ARGS_BUFFER_SIZE - 1;
+    }
+}
+
+void buff_right() 
+{
+    buf_ptr++;
+    
+    if (buf_ptr == ARGS_BUFFER_SIZE) {
+        buf_ptr = 0;
+    }
 }
 
 char rewind_buffer(unsigned int rewind_ptr)
@@ -75,7 +92,7 @@ char rewind_buffer(unsigned int rewind_ptr)
 
                 if (buffer[buf_ptr] == '"') {
 
-                    if (buffer[(buf_ptr - 1) % RING_BUFFER_SIZE] == '\\') {
+                    if (buffer[(buf_ptr - 1) % ARGS_BUFFER_SIZE] == '\\') {
                         buff_left();
                         buff_left();
                     }
@@ -96,8 +113,8 @@ char rewind_buffer(unsigned int rewind_ptr)
         if (buffer[buf_ptr] == ',')
             break;
     }
-    buf_ptr++;
-    buf_ptr %= RING_BUFFER_SIZE;
+
+    buff_right();
 
     return is_last;
 }
@@ -119,12 +136,13 @@ char get_chr()
         if (!fread(&c, 1, 1, fp)) {
             eof = 1;
         }
-        buffer[buf_ptr++] = c;
+        buffer[buf_ptr] = c;
     } else {
-        c = buffer[buf_ptr++];
+        c = buffer[buf_ptr];
     }
 
-    buf_ptr %= RING_BUFFER_SIZE;
+    buff_right();
+
     if (feof(fp))
         eof = 1;
 

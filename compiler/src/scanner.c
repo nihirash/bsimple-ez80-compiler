@@ -473,8 +473,6 @@ void process_fun_call(char *fun)
     rewind_ptr = buf_ptr - 1;
     p_balance = 1;
     for (token = get_token(); p_balance != 0; token = get_token()) {
-
-
         if (token == LP) {
             p_balance++;
 
@@ -503,8 +501,9 @@ void process_fun_call(char *fun)
             continue;
         }
 
-        if (token == Unknown)
+        if (token == Unknown) {
             error(UNEXPECTED_SYMBOL);
+        }
     }
     exit_ptr = buf_ptr;
     is_buffered++;
@@ -559,7 +558,11 @@ void process_block(char is_fun)
                     process_assing();
                     break;
                 case LP:
+                    clean_buffer();
+                    buffer[0] = '(';
+                    buf_ptr = 1;
                     process_fun_call(l_value);
+                    is_buffered = 0;
                     token = get_token();
                     if (token != EOS) {
                         error(UNEXPECTED_SYMBOL);

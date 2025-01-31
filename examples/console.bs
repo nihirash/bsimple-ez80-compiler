@@ -3,6 +3,7 @@ import "../stdlib/startup.i"
 main() {
     var name[10], i, key;
 
+    vdp_mode(1);
 
     puts("Hello!\r\nWhat is your name? ");
 
@@ -12,17 +13,45 @@ main() {
         return;
     }
 
+    set_cursor_mode(0);
+
     printf("\r\nHello, %s!\r\n", &name);
 
     i = 0;
     while i < 50 {
-        printf("Random number: %d %d\r\n", rand_range(-1000, 1000), rand());
+        printf("Random number: %d %d\r\n", rand_range(1000, -1000), rand());
 
         i = i + 1;
     }
 
-    puts("\r\nPress key to exit\r\n");
+    puts("\r\nPress any key\r\n");
     key = getc();
+    
+    cls();
+    beep();
+    
+    i=0;
+    while i < 50 {
+        gotoxy(0, i); putc('*');
+        gotoxy(i, 0); putc('*');
+        gotoxy(i, 49); putc('*');
+        gotoxy(49, i); putc('*');
+        gotoxy(i, i); putc('*');
+        gotoxy(i, 49 - i); putc('*');
+        i=i+1;
+    }
+    gotoxy(21, 52);
+    printf("Pew pew!");
 
-    printf("You pressed key with code 0x%x\r\n", key);
+    getc();
+    set_cursor_mode(1);
+    cls();
+
+    printer_enable();
+    printer_puts("Hello, world!");
+    printer_putc(13);
+    printer_putc(10);
+    printerf("\r\nHello, world! Test of printer: %x\r\n", $7ffd);
+
+    printer_disable();
 }
