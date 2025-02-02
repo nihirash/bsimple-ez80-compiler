@@ -46,12 +46,4 @@ main() {
     getc();
     set_cursor_mode(1);
     cls();
-
-    printer_enable();
-    printer_puts("Hello, world!");
-    printer_putc(13);
-    printer_putc(10);
-    printerf("\r\nHello, world! Test of printer: %x\r\n", $7ffd);
-
-    printer_disable();
 }

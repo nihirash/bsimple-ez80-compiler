@@ -1,0 +1,67 @@
+import "../stdlib/startup.i"
+
+write_test() {
+    var fp;
+
+    puts("Creating file!\r\n");
+
+    fp = fopen("test.tmp", "w");
+    if fp == 0 {
+        puts("Can't create file!\r\n");
+
+        return;
+    }
+
+    printf("File pointer is: %d\r\n", fp);
+    fputc(fp, '1');
+    fputc(fp, '2');
+    fputc(fp, '3');
+    fputs(fp, "\r\nHello, world!\r\n");
+
+    fprintf(fp, "\r\nfprintf test\r\nFormatters:\r\nDec: %d\r\nOct: %o\r\nBin: %b\r\nHex: %x\r\nStr: %s\r\n",
+                10, 
+                10, 
+                10, 
+                10, 
+                "Pew!"
+     );
+
+    printf("Files opened left: %d\r\n", fclose(fp));    
+}
+
+read_test() {
+    var fp, bytes_read;
+
+    puts("\r\n\r\nReading file!\r\n");
+
+    fp = fopen("test.tmp", "r");
+
+    if fp == 0 {
+        puts("Can't open file for reading!\r\n");
+
+        return;
+    }
+
+    bytes_read = 0;
+    while feof(fp) == 0 {
+        putc(fgetc(fp));
+        bytes_read = bytes_read + 1;
+    }    
+
+    printf("\r\n\r\n%d bytes read\r\n", bytes_read);
+
+    fclose(fp);
+
+}
+
+main() {
+    write_test();
+    read_test();
+    
+    if delete("test.tmp") {
+        puts("Error while deleting temp. file\r\n");
+
+        return;
+    }
+
+}

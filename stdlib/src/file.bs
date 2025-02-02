@@ -1,0 +1,151 @@
+# Converts c-like file open mode to MOS value
+fopen_mode(mode) {
+    if strcmp(mode, "r") {
+        return &_fa_r;
+    }
+
+    if strcmp(mode, "w") {
+        return &_fa_w;
+    }
+
+    if strcmp(mode, "a") {
+        return &_fa_a;
+    }
+
+    if strcmp(mode, "wx") {
+        return &_fa_wx;
+    }
+
+    if strcmp(mode, "w+") {
+        return &_fa_wp;
+    }
+
+    if strcmp(mode, "r+") {
+        return &_fa_rp;
+    }
+
+
+    if strcmp(mode, "a+") {
+        return &_fa_ap;
+    }
+
+    if strcmp(mode, "w+x") {
+        return &_fa_wxp;
+    }
+
+    return -1;
+}
+
+# open file(c styled function)
+fopen(path, mode) {
+    mode = fopen_mode(mode);
+
+    if mode == -1 {
+        return 0;
+    }
+
+    return mos_fopen(path, mode);
+}
+
+fprintf(fp, ptr, x1) {
+    var cur_char, p;
+
+	cur_char = [*ptr -> 0] & 255;
+	p = &x1;
+
+    while cur_char {
+
+		if cur_char != '%' {
+			fputc(fp, cur_char);
+		}
+
+		if cur_char == '%' {
+			ptr = ptr + 1;
+			cur_char = [*ptr -> 0] & 255;
+
+			if cur_char == 's' {
+				fputs(fp, [*p->0]);
+				p = p + 3;
+			}
+
+			if cur_char == 'c' {
+				fputc(fp, [*p->0] & 255);
+				p = p + 3;
+			}
+
+			if cur_char == 'd' {
+				fprintn(fp, [*p->0], 10);
+				p = p + 3;
+			}
+
+			if cur_char == 'o' {
+				fprintn(fp, [*p->0], 8);
+				p = p + 3;
+			}
+
+			if cur_char == 'b' {
+				fprintn(fp, [*p->0], 2);
+				p = p + 3;
+			}
+
+			if cur_char == 'x' {
+				fprintx(fp, [*p->0]);
+
+				p = p + 3;
+			}
+
+			if cur_char == '%' {
+				fputc(fp, '%');
+			}
+
+		}
+
+		ptr = ptr + 1;
+		cur_char = [*ptr -> 0] & 255;
+	}
+}
+
+
+# Print number in specified base
+# n is number to print
+# b is base of number
+fprintn(fp, n, b) {
+  var a;
+
+  if n == 16 {
+    return fprintx(fp, n);
+  }
+	
+  if n < 0 {
+    n = neg(n);
+    fputc(fp, '-');
+  }
+
+  a = n / b;
+
+  if a {
+    fprintn(fp, a, b);
+  }
+
+  fputc(
+    fp, 
+    n % b + '0'
+  );
+}
+
+# Prints number as hex value
+fprintx(fp, n) {
+	var a, p;
+
+	p = "0123456789ABCDEF";
+
+	a = udiv(n, 16);
+
+	if a {
+		fprintx(fp, a);
+	}
+
+	p = n & 15 + p;
+
+	fputc(fp, [ *p -> 0 ]);
+}

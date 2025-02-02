@@ -287,7 +287,6 @@ __idivu:
   pop	af
   ret
 
-
 __cmp:
   or a,a 
   sbc hl,de
@@ -303,7 +302,6 @@ __cmp:
   push bc
   pop af
   ret
-
 
 _rand:
   ld hl, (@state)
@@ -334,3 +332,7 @@ _rand:
   ret
 @state:
   dl $F7A2E3
+
+_trace:
+  rst.lil $38
+  ret
