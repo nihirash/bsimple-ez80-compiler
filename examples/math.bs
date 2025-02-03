@@ -1,4 +1,4 @@
-import "../stdlib/startup.i"
+import "../lib/startup.i"
 
 sum(x, y) {
     return x + y;

@@ -1,6 +1,5 @@
-SRCS := $(wildcard src/*.i) $(wildcard src/*.bs)
+SRCS := $(wildcard *.i) $(wildcard *.bs)
 BUILT := $(SRCS:.bs=.s) 
-RESULT := startup.i
 BSIMPLE := bsc
 
 %.s: %.bs
@@ -8,9 +7,9 @@ BSIMPLE := bsc
 
 $(RESULT): $(BUILT)
 		cat $(BUILT) > $(RESULT)
-		rm src/*.s
+		rm -f *.s
 
 all: $(RESULT)
 
 clean:
-		rm -f src/*.s $(RESULT)
+		rm -f *.s $(RESULT)

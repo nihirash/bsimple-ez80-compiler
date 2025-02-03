@@ -46,6 +46,9 @@ void error(char code)
     case BINARY_OPERATION:
         printf("Binary operation! ");
         break;
+    case TOO_FAR_ON_STACK:
+        printf("Trying allocate too far on stack! ");
+        break;
     default:
         printf("Unknown error happens ");
         break;

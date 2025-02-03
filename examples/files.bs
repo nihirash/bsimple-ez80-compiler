@@ -1,11 +1,15 @@
-import "../stdlib/startup.i"
+import "../lib/startup.i"
+import "../lib/stdlib.i"
+import "../lib/files.i"
+
+var buffer[173];
 
 write_test() {
     var fp;
 
     puts("Creating file!\r\n");
 
-    fp = fopen("test.tmp", "w");
+    fp = fopen("test.tmp", "w+");
     if fp == 0 {
         puts("Can't create file!\r\n");
 
@@ -26,7 +30,10 @@ write_test() {
                 "Pew!"
      );
 
+    flseek_ext(fp, 100, 2);
+    fputc(fp, '0');
     printf("Files opened left: %d\r\n", fclose(fp));    
+    exec("ls -l test.*");
 }
 
 read_test() {
@@ -42,15 +49,29 @@ read_test() {
         return;
     }
 
-    bytes_read = 0;
-    while feof(fp) == 0 {
-        putc(fgetc(fp));
-        bytes_read = bytes_read + 1;
-    }    
+    printf("flseek result: %d\r\n", flseek(fp, 5));
 
+    bytes_read = fread(fp, &buffer, 512);
+
+    puts(&buffer);
+    
     printf("\r\n\r\n%d bytes read\r\n", bytes_read);
 
     fclose(fp);
+
+    fp = fopen("test.tm1", "w");
+
+    if fp == 0 {
+        return;
+    }
+
+    fwrite(fp, &buffer, bytes_read);
+
+    fclose(fp);
+
+    exec("ls -l test.*");
+
+    delete("test.tm1");
 
 }
 
@@ -58,10 +79,33 @@ main() {
     write_test();
     read_test();
     
+    fcopy("test.tmp", "test.tm2");
+    exec("ls -l test.*");
+    frename("test.tm2", "test.tm3");
+    exec("ls -l test.*");
+
     if delete("test.tmp") {
         puts("Error while deleting temp. file\r\n");
 
         return;
     }
+
+    delete("test.tm3");
+
+    if mkdir("tmp") {
+        puts("Error while creating directory\r\n");
+
+        return;
+    }
+
+    if cwd("tmp") {
+        puts("Error while changing working directory\r\n");
+
+        return;
+    }
+
+    cwd("..");
+    exec("ls -l");
+    delete("tmp");
 
 }

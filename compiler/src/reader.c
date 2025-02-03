@@ -32,24 +32,25 @@ void init_reader(char *filename)
         error(OPEN_FILE_ISSUE);
 }
 
-void clean_buffer() {
-    for (int i=0;i<ARGS_BUFFER_SIZE;i++)
+void clean_buffer()
+{
+    for (int i = 0; i < ARGS_BUFFER_SIZE; i++)
         buffer[i] = 0;
 }
 
 void buff_left()
 {
     buf_ptr--;
-    
+
     if (buf_ptr < 0) {
         buf_ptr = ARGS_BUFFER_SIZE - 1;
     }
 }
 
-void buff_right() 
+void buff_right()
 {
     buf_ptr++;
-    
+
     if (buf_ptr == ARGS_BUFFER_SIZE) {
         buf_ptr = 0;
     }
@@ -71,11 +72,11 @@ char rewind_buffer(unsigned int rewind_ptr)
                 if (buffer[buf_ptr] == '(') {
                     par--;
                     buff_left();
-                    
+
                     if (!par)
                         break;
                 }
-                
+
                 if (buffer[buf_ptr] == ')') {
                     par++;
                     buff_left();

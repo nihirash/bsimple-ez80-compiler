@@ -21,7 +21,7 @@ void process_fun_call(char *fun_to_call);
 
 void global_var()
 {
-    char size = 1;
+    int size = 1;
     char name[MAX_TOKEN_SIZE];
     char tok;
 
@@ -63,9 +63,9 @@ void global_var()
 
 void process_local_vars()
 {
-    char offset = 0;
+    int offset = 0;
     char token;
-    char size = 1;
+    int size = 1;
     char name[MAX_TOKEN_SIZE];
 
     token = get_token();
@@ -99,6 +99,10 @@ void process_local_vars()
         }
 
         offset += size * WORD_SIZE;
+
+        if (offset > 127)
+            error(TOO_FAR_ON_STACK);
+
         register_var(name, -offset);
 
         if (token == Comma) {

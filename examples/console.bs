@@ -1,4 +1,5 @@
-import "../stdlib/startup.i"
+import "../lib/startup.i"
+import "../lib/stdlib.i"
 
 main() {
     var name[10], i, key;

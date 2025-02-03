@@ -1,9 +1,23 @@
-NAME = bsc
-DESCRIPTION = "B-Simple compiler"
-COMPRESSED = NO
-LDHAS_ARG_PROCESSING = 1
+SRC := src
+CROSSBIN := bsc
+DEPS := $(wildcard $(SRC)/*.c $(SRC)/*.h)
+SRCS := $(wildcard $(SRC)/*.c)
+C := cc
+INSTALLDIR := ~/bin/
+INDENT := gindent
 
-CFLAGS = -Wall -Wextra -O0
-CXXFLAGS = -Wall -Wextra -O0
+$(CROSSBIN): $(DEPS) format
+	$(C) $(SRCS) -o $(CROSSBIN)
 
-include $(shell agondev-config  --makefile)
+install: $(CROSSBIN)
+	rm -f $(INSTALLDIR)$(CROSSBIN)
+	cp $(CROSSBIN) $(INSTALLDIR)
+
+format:
+	$(INDENT) -kr -ts1 $(DEPS)
+	rm -f $(SRC)/*.c~ $(SRC)/*.h~
+
+all: format install
+
+clean:
+	rm -f $(CROSSBIN)

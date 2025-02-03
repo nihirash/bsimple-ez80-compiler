@@ -1,7 +1,5 @@
-PACKAGES = compiler lib examples
+PACKAGES =  startup stdlib files
 TARGETS = all clean
-
-default: all
 
 $(TARGETS):
 		for p in $(PACKAGES) ; do $(MAKE) $(FLAGS) -C $$p $@ || break ; done

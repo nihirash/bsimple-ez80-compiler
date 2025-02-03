@@ -26,3 +26,4 @@ _strcmp:
   ld sp, ix
   pop ix
 	ret
+
