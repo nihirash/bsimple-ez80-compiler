@@ -15,9 +15,9 @@ abs(n) {
 # Swap values in two pointers
 swap(ptr1, ptr2) {
     var t;
-    t = [*ptr1->0];
-    [*ptr1->0] = [*ptr2->0];
-    [*ptr2->0] = t;
+    t = *ptr1;
+    *ptr1 = *ptr2;
+    *ptr2 = t;
 }
 
 # Get random number in specified range

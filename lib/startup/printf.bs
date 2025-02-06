@@ -10,7 +10,7 @@
 printf(ptr, x1) {
 	var cur_char, p;
 
-	cur_char = [*ptr -> 0] & 255;
+	cur_char = *ptr & 255;
 	p = &x1;
 
 	while cur_char {
@@ -20,35 +20,35 @@ printf(ptr, x1) {
 
 		if cur_char == '%' {
 			ptr = ptr + 1;
-			cur_char = [*ptr -> 0] & 255;
+			cur_char = *ptr & 255;
 
 			if cur_char == 's' {
-				puts([*p->0]);
+				puts(*p);
 				p = p + 3;
 			}
 
 			if cur_char == 'c' {
-				putc([*p->0] & 255);
+				putc(*p & 255);
 				p = p + 3;
 			}
 
 			if cur_char == 'd' {
-				printn([*p->0], 10);
+				printn(*p, 10);
 				p = p + 3;
 			}
 
 			if cur_char == 'o' {
-				printn([*p->0], 8);
+				printn(*p, 8);
 				p = p + 3;
 			}
 
 			if cur_char == 'b' {
-				printn([*p->0], 2);
+				printn(*p, 2);
 				p = p + 3;
 			}
 
 			if cur_char == 'x' {
-				printx([*p->0]);
+				printx(*p);
 
 				p = p + 3;
 			}
@@ -60,7 +60,7 @@ printf(ptr, x1) {
 		}
 
 		ptr = ptr + 1;
-		cur_char = [*ptr -> 0] & 255;
+		cur_char = *ptr & 255;
 	}
 }
 
@@ -104,5 +104,5 @@ printx(n) {
 
 	p = n & 15 + p;
 
-	putc( [ *p -> 0 ] );
+	putc( *p );
 }

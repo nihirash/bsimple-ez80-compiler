@@ -97,6 +97,20 @@ void load_global_variable_to_add(char *ptr)
     write_code(buf);
 }
 
+void load_absoulte_addr(char *ptr)
+{
+    sprintf(buf, "\tld hl, (%s)\n", ptr);
+
+    write_code(buf);
+}
+
+void load_absoulte_addr_to_add(char *ptr)
+{
+    sprintf(buf, "\tld de, (%s)\n", ptr);
+
+    write_code(buf);
+}
+
 void set_accumulator_to_ptr(char *ptr)
 {
     sprintf(buf, "\tld hl, _%s\n", ptr);

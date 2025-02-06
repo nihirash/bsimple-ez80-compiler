@@ -1,0 +1,19 @@
+import "../lib/startup.i"
+
+main() {
+    var s, p;
+
+    s = "12345\r\n";
+    p = s;
+
+    puts("\r\n");
+
+    while *p & $ff {
+        putc(*p);
+
+        p = p + 1;
+    }
+
+    printf("App header is: %c%c%c and bytes %x %x\r\n", *$40040, *$40041, *$40042, *$40043 & $ff, *$40044 & $ff);
+
+}

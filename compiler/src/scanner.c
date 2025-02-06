@@ -127,11 +127,12 @@ void calc_indexed_address()
         if (is_keyword(current_token))
             error(NOT_VALID_IDENTIFIER);
 
-        // Global array
         if (!s || s->type == Glob) {
             set_accumulator_to_ptr(current_token);
         } else if (s && (s->type == Auto || s->type == Parameter)) {
             set_accumulator_to_stack_ptr(s->offset);
+        } else {
+            error(UNEXPECTED_SYMBOL);
         }
         break;
 
@@ -198,6 +199,45 @@ char process_value(char is_acc)
     }
 
     switch (token) {
+    case Mul:
+        token = get_token();
+        if (token == Number) {
+            if (is_acc) {
+                load_absoulte_addr(current_token);
+            } else {
+                load_absoulte_addr_to_add(current_token);
+            }
+        } else {
+            if (token != Id)
+                error(UNEXPECTED_SYMBOL);
+
+            if (is_keyword(current_token))
+                error(UNEXPECTED_SYMBOL);
+
+            s = lookup_symbol(current_token);
+
+            if (!is_acc) {
+                push_accumulator();
+            }
+
+            if (!s || s->type == Glob) {
+                set_accumulator_to_ptr(current_token);
+            } else if (s && (s->type == Auto || s->type == Parameter)) {
+                set_accumulator_to_stack_ptr(s->offset);
+            } else {
+                error(UNEXPECTED_SYMBOL);
+            }
+
+            load_from_acc_ptr();
+            load_from_acc_ptr();
+
+            if (!is_acc) {
+                swap_regs();
+                pop_accumulator();
+            }
+
+        }
+        break;
     case BAnd:
         token = get_token();
         if (token != Id)

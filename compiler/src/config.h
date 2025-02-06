@@ -1,4 +1,4 @@
-#define VERSION         "0.0.1"
+#define VERSION         "0.0.2"
 
 // For eZ80 ADL is 3
 #define WORD_SIZE           3

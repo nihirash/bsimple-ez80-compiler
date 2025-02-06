@@ -50,7 +50,7 @@ fopen(path, mode) {
 fprintf(fp, ptr, x1) {
     var cur_char, p;
 
-	cur_char = [*ptr -> 0] & 255;
+	cur_char = *ptr & 255;
 	p = &x1;
 
     while cur_char {
@@ -61,35 +61,35 @@ fprintf(fp, ptr, x1) {
 
 		if cur_char == '%' {
 			ptr = ptr + 1;
-			cur_char = [*ptr -> 0] & 255;
+			cur_char = *ptr & $ff;
 
 			if cur_char == 's' {
-				fputs(fp, [*p->0]);
+				fputs(fp, *p);
 				p = p + 3;
 			}
 
 			if cur_char == 'c' {
-				fputc(fp, [*p->0] & 255);
+				fputc(fp, *p & $ff);
 				p = p + 3;
 			}
 
 			if cur_char == 'd' {
-				fprintn(fp, [*p->0], 10);
+				fprintn(fp, *p, 10);
 				p = p + 3;
 			}
 
 			if cur_char == 'o' {
-				fprintn(fp, [*p->0], 8);
+				fprintn(fp, *p, 8);
 				p = p + 3;
 			}
 
 			if cur_char == 'b' {
-				fprintn(fp, [*p->0], 2);
+				fprintn(fp, *p, 2);
 				p = p + 3;
 			}
 
 			if cur_char == 'x' {
-				fprintx(fp, [*p->0]);
+				fprintx(fp, *p);
 
 				p = p + 3;
 			}
@@ -101,7 +101,7 @@ fprintf(fp, ptr, x1) {
 		}
 
 		ptr = ptr + 1;
-		cur_char = [*ptr -> 0] & 255;
+		cur_char = *ptr & 255;
 	}
 }
 
@@ -147,5 +147,5 @@ fprintx(fp, n) {
 
 	p = n & 15 + p;
 
-	fputc(fp, [ *p -> 0 ]);
+	fputc(fp, *p);
 }

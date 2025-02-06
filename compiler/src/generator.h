@@ -45,6 +45,10 @@ void load_global_variable(char *ptr);
 /// @param ptr 
 void load_global_variable_to_add(char *ptr);
 
+void load_absoulte_addr(char *ptr);
+
+void load_absoulte_addr_to_add(char *ptr);
+
 /// @brief          Store global var pointer to accumulator
 /// @param ptr 
 void set_accumulator_to_ptr(char *ptr);
