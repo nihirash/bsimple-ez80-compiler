@@ -87,7 +87,112 @@ _strcmp:
   pop ix
 	ret
 
+_str2cmp:
+  push ix
+  ld ix, 0
+  add ix, sp
 
+  ld hl, (ix + 6)
+  ld de, (ix + 9)
+@loop:
+  ld	a, (de)
+	or	a, a
+	jr	z, @done
+	cpi
+	inc	de
+	jr	z, @loop
+  ld hl, 0
+  jr @x
+@done:
+  ld hl, -1
+@x:
+  ld sp, ix
+  pop ix
+	ret
+
+_strcpy:
+  push ix
+  ld ix, 0
+  add ix, sp
+  ld de, (ix + 6)
+  ld hl, (ix + 9)
+@loop:
+  ld a, (hl)
+  ldi
+  and a
+  jr z, @x
+  jr @loop
+@x:
+  ld sp, ix
+  pop ix
+	ret
+
+
+_strlen:
+  ld hl, 3
+  add hl, sp
+  ld hl, (hl)
+  ld bc, 0
+  xor a
+  cpir
+  or a
+  sbc hl, hl
+  scf
+  sbc hl, bc
+  ret
+
+_strcat:
+  push ix
+  ld ix, 0
+  add ix, sp
+; Looking for string end
+  xor a
+  ld bc, 0
+  ld hl, (ix + 6)
+  cpir
+; we're just after 0x00 byte
+  dec hl
+  ld de, (ix + 9)
+  ex de, hl
+@cp_lp:
+  ld a, (hl)
+  ldi
+  and a
+  jr z, @x
+  jr @cp_lp
+@x:
+  ld sp, ix
+  pop ix
+  ret
+
+_strchr:
+  ld hl, 3
+  add hl, sp
+  ld hl, (hl)
+  ld bc, 0
+  xor a
+  cpir
+  or a
+  sbc hl, hl
+  scf
+  sbc hl, bc
+  push hl
+  pop bc
+  
+  ld hl, 6
+  add hl, sp
+  ld a, (hl)
+  dec hl
+  dec hl
+  dec hl
+  ld hl, (hl)
+  cpir
+  dec hl
+  ret z
+
+  or a
+  sbc hl, hl
+  ret
 ;; VDP routines
 _cls:
   ld a, 12
@@ -159,3 +264,86 @@ _beep:
   ld a, 7
   rst.lil $10
   ret
+
+_strstr:
+	push ix
+	ld ix, 0
+	add ix, sp
+
+	ld hl, -9
+	add hl, sp
+	ld sp, hl
+
+	push de
+	ld hl, (ix+9)
+	push hl
+	call _strlen
+	ex de,hl
+	ld hl, 3
+	add hl, sp
+	ld sp, hl
+	ex de,hl
+	pop de
+	ld (ix+-9), hl
+	ld hl, (ix+6)
+	ld (ix+-6), hl
+	ld hl, (ix+-6)
+	push hl
+	ld hl, (ix+6)
+	push hl
+	call _strlen
+	ex de,hl
+	ld hl, 3
+	add hl, sp
+	ld sp, hl
+	ex de,hl
+	ex de, hl
+	pop hl
+	add hl, de
+	ld de, (ix+-9)
+	or a
+	sbc hl,de
+	ld (ix+-3), hl
+_strings001:
+	ld hl, (ix+-6)
+	ld de, (ix+-3)
+	call __cmp
+	ld hl, 0
+	jp p, _strings002
+	ld hl, -1
+_strings002:
+	ld de, 0
+	or a
+	sbc hl, de
+	jp z, _strings003
+	push de
+	ld hl, (ix+9)
+	push hl
+	ld hl, (ix+-6)
+	push hl
+	call _str2cmp
+	ex de,hl
+	ld hl, 6
+	add hl, sp
+	ld sp, hl
+	ex de,hl
+	pop de
+	ld de, 0
+	or a
+	sbc hl, de
+	jp z, _strings004
+	ld hl, (ix+-6)
+	jp _strstr_end
+_strings004:
+	ld hl, (ix+-6)
+	ld de, 1
+	add hl, de
+	ld (ix+-6), hl
+	jp _strings001
+_strings003:
+	ld hl, 0
+	jp _strstr_end
+_strstr_end:
+	ld sp, ix
+	pop ix
+	ret

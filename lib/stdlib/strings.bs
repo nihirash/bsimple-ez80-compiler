@@ -1,0 +1,19 @@
+# find entrance of short string in big string
+# maybe it should be rewritten in asm. if it will be actual :-)
+strstr(big, small) {
+    var end, ptr, size;
+
+    size = strlen(small);
+    ptr = big;
+    end = ptr + strlen(big) - size;
+    while ptr < end {
+
+        if str2cmp(ptr, small) {
+            return ptr;
+        }
+
+        ptr = ptr + 1;
+    }
+
+    return 0;
+}

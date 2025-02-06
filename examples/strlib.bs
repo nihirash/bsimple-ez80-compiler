@@ -1,0 +1,18 @@
+import "../lib/startup.i"
+import "../lib/stdlib.i"
+
+var buff[10];
+
+main() {
+    var x;
+    x = "Hello, world!";
+
+    printf("strcmp test %d %d\r\n", strcmp("1", "2"), strcmp("1", "1"));
+    strcpy(&buff, x);
+    printf("copied with strcpy string: %s\r\n", &buff);
+    printf("strlen %d\r\n", strlen(&buff));
+    strcat(&buff, "\r\nGoodbye world!\r\n");
+    puts(&buff);
+    puts(strchr(&buff, 'G'));
+    puts(strstr("Long string is here\r\n", "string"));
+}
