@@ -10,6 +10,7 @@ $(CROSSBIN): $(DEPS) format
 	$(C) $(SRCS) -o $(CROSSBIN)
 
 install: $(CROSSBIN)
+	mkdir -p $(INSTALLDIR)
 	rm -f $(INSTALLDIR)$(CROSSBIN)
 	cp $(CROSSBIN) $(INSTALLDIR)
 

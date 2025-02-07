@@ -185,6 +185,8 @@ stdlib()
         # * %b - for bin. numbers
         # * %c - for characters(by value)
         # * %s - for strings(by pointer, not formatted zero-terminated)
+        #
+        # * %% - just for printing '%' symbol
         printf("\r\nYou are entered: %s(%d bytes long)\r\n", &line, strlen(&line));
         # Also you've seen here `strlen(ptr)` - it returns lenght of string
     }
