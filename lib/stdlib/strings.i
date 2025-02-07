@@ -27,7 +27,7 @@ _strcmp:
   pop ix
 	ret
 
-_str2cmp:
+_strstarts:
   push ix
   ld ix, 0
   add ix, sp

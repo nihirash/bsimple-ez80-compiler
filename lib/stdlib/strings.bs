@@ -8,7 +8,7 @@ strstr(big, small) {
     end = ptr + strlen(big) - size;
     while ptr < end {
 
-        if str2cmp(ptr, small) {
+        if strstarts(ptr, small) {
             return ptr;
         }
 

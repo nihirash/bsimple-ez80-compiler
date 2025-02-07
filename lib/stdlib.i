@@ -87,7 +87,7 @@ _strcmp:
   pop ix
 	ret
 
-_str2cmp:
+_strstarts:
   push ix
   ld ix, 0
   add ix, sp
@@ -321,7 +321,7 @@ _strings002:
 	push hl
 	ld hl, (ix+-6)
 	push hl
-	call _str2cmp
+	call _strstarts
 	ex de,hl
 	ld hl, 6
 	add hl, sp
