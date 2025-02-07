@@ -512,6 +512,7 @@ void process_fun_call(char *fun)
     unsigned int rewind_ptr, exit_ptr;
     int p_balance;
 
+    args = 0;
     strcpy(fun_to_call, fun);
 
     rewind_ptr = buf_ptr - 1;
@@ -571,6 +572,33 @@ void process_fun_call(char *fun)
     call_proc(fun_to_call, args * WORD_SIZE);
 }
 
+void process_assign_to_ptr()
+{
+    char token;
+    Symbol *s;
+
+    token = get_token();
+    if (token != Id || is_keyword(current_token))
+        error(UNEXPECTED_SYMBOL);
+    s = lookup_symbol(current_token);
+
+    if (!s || s->type == Glob) {
+        load_global_variable(current_token);
+    } else if (s && (s->type == Auto || s->type == Parameter)) {
+        load_local_variable(s->offset);
+    }
+    push_accumulator();
+
+    if (get_token() != Assign)
+        error(UNEXPECTED_SYMBOL);
+
+    if (process_expression() != EOS)
+        error(UNEXPECTED_SYMBOL);
+
+    store_accum_to_stack_ptr();
+
+}
+
 void process_block(char is_fun)
 {
 
@@ -593,6 +621,11 @@ void process_block(char is_fun)
 
     while (token != End) {
         is_buffered = 0;
+
+        if (token == Mul) {
+            process_assign_to_ptr();
+        }
+
         if (token == Id) {
             if (!is_keyword(current_token)) {
                 strcpy(l_value, current_token);

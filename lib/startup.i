@@ -461,12 +461,20 @@ _swap:
 	ld hl, (hl)
 	ld hl, (hl)
 	ld (ix+-3), hl
+	ld hl, (ix+6)
+	push hl
 	lea hl, ix+9
 	ld hl, (hl)
 	ld hl, (hl)
-	ld (ix+6), hl
+	pop de
+	ex de, hl
+	ld (hl), de
+	ld hl, (ix+9)
+	push hl
 	ld hl, (ix+-3)
-	ld (ix+9), hl
+	pop de
+	ex de, hl
+	ld (hl), de
 _swap_end:
 	ld sp, ix
 	pop ix

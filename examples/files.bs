@@ -30,7 +30,7 @@ write_test() {
                 "Pew!"
      );
 
-    flseek_ext(fp, 100, 2);
+    flseek(fp, 100);
     fputc(fp, '0');
     printf("Files opened left: %d\r\n", fclose(fp));    
     exec("ls -l test.*");

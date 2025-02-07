@@ -30,5 +30,6 @@ rand_range(min, max) {
     }
 
     range = max - min;
+    
     return rand() % range + min;
 }
