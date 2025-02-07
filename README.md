@@ -41,4 +41,4 @@ Compiler can be built with almost any standard C compiler(for native Agon versio
 
 ## License 
 
-Project licensed with MIT License.
+Project licensed with GNU GPLv3.
