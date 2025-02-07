@@ -9,7 +9,7 @@ BSimple is mid-level programming language and compiles to assembly. All identifi
 # They're starting from '#' symbol and everything to the end of line will be
 # interpreted as commentary
 
-# There're only one datetype - machine word(24 bit) and all variables are 3 bytes
+# There're only one datetype - machine word(24 bit) and all variables are 3 bytes long
 # (or N*3 bytes for arrays with size of N elements, cause every element if 3 bytes
 # long)
 
