@@ -10,3 +10,4 @@ stdlib/startup.i
 stdlib/src/*.s
 examples/*.s
 lib/*.i
+.vscode/
