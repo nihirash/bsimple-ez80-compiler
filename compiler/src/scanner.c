@@ -62,6 +62,26 @@ void process_for_loop()
     write_label(label_done);
 }
 
+void process_repeat_until()
+{
+    char label1[MAX_TOKEN_SIZE];
+    Symbol *s;
+
+    strcpy(label1, make_label());
+    process_block(0);
+
+    if (get_token() != Id)
+        error(UNEXPECTED_SYMBOL);
+
+    s = lookup_symbol(current_token);
+
+    if (s->offset != K_Until)
+        error(UNEXPECTED_SYMBOL);
+
+    process_expression();
+    jump_if_false(label1);
+}
+
 
 void global_var()
 {
@@ -727,6 +747,10 @@ void process_statement(char token)
                 sprintf(label, "_%s_%s", current_function, current_token);
                 jump(label);
                 break;
+            case K_Repeat:
+                process_repeat_until();
+
+                break;
             default:
                 break;
             }
@@ -848,6 +872,8 @@ void process_binary()
 
     if (is_keyword(current_token))
         error(CANT_REDEFINE);
+
+    printf("binary %s\r\n", current_token);
 
     sprintf(label, "_%s", current_token);
     write_label(label);

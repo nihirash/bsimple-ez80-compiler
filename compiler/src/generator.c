@@ -315,6 +315,13 @@ char *check_condition()
     return new_label;
 }
 
+void jump_if_false(char *label)
+{
+    sprintf(buf, "\tld de, 0\n\tor a\n\tsbc hl, de\n\tjp z, %s\n", label);
+
+    write_code(buf);
+}
+
 void write_label(char *label)
 {
     sprintf(buf, "%s:\n", label);

@@ -17,6 +17,8 @@ enum {
     K_Import,
     K_Bin,
     K_For,
+    K_Repeat,
+    K_Until,
 };
 
 typedef struct {
