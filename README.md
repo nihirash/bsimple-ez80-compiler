@@ -19,7 +19,16 @@ Currently, project have no proper documentation but we have [Learn B Simple in Y
  * Extract archive to root of SD card
  * Libraries will be in `/BSimple/lib` directory, examples in `/BSimple/examples`
  * For building single source file call `bsc <filename>` it will produce file with same name but `.s` extension
- * Build your programm using [ez80asm](https://github.com/envenomator/agon-ez80asm) 
+ * Build binary using [ez80asm](https://github.com/envenomator/agon-ez80asm) 
+
+For example:
+
+```
+cd /BSimple/examples
+bsc console
+ez80asm console.s
+console
+```
 
 You can also create some kind of `build.txt` files that will automate compilation and assembly steps.
 
@@ -39,6 +48,10 @@ Compiler can be built with almost any standard C compiler(for native Agon versio
  * Parenthesis not supported in expressions
  * Need make optimiser(peephole?!) 
  * Stack allocated vars limited for 40 words(120 bytes) per function call(cause index register usage)
+
+## Support development
+
+You can buy me coffee using [Ko-Fi Page](https://ko-fi.com/nihirash). 
 
 ## License 
 
