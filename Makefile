@@ -1,5 +1,5 @@
 PACKAGES = compiler lib examples
-TARGETS = all clean
+TARGETS = all clean format
 
 default: all
 

@@ -6,7 +6,7 @@ C := cc
 INSTALLDIR := ~/bin/
 INDENT := gindent
 
-$(CROSSBIN): $(DEPS) format
+$(CROSSBIN): $(DEPS)
 	$(C) $(SRCS) -o $(CROSSBIN)
 
 install: $(CROSSBIN)
