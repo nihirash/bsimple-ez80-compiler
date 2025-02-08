@@ -18,7 +18,7 @@ format:
 	$(INDENT) -kr -ts1 $(DEPS)
 	rm -f $(SRC)/*.c~ $(SRC)/*.h~
 
-all: format install
+all: install
 
 clean:
 	rm -f $(CROSSBIN)

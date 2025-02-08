@@ -158,6 +158,11 @@ control()
 
         a = a + 1;
     }
+
+    # For loop produce less efficient code but can be used too
+    for (a = 1; a < 10; a = a + 1) {
+        printf("Iteration %d\r\n", a);
+    }
 }
 
 # Examples of usage standard library

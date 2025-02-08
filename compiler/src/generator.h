@@ -167,3 +167,6 @@ void e_mod();
 
 /// @brief              Label prefix that will be used for labels generation
 extern char l_prefix[];
+
+/// @brief              Creates new label and returns it 
+char *build_label();

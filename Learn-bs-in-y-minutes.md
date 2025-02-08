@@ -22,6 +22,10 @@ import "../lib/startup.i"
 import "../lib/stdlib.i"
 import "../lib/files.i"
 
+# You can also include binary files into your program(or text files)
+# It will be included with label "source"
+incbin source, "learn.bs"
+
 # Declaring global variables and arrays are possible with var keyword
 var global_var1;
 var global_var2;
@@ -169,6 +173,11 @@ control()
         printf("Line %d\r\n", a);
 
         a = a + 1;
+    }
+
+    # For loop produce less efficient code but can be used too
+    for (a = 1; a < 10; a = a + 1) {
+        printf("Iteration %d\r\n", a);
     }
 }
 

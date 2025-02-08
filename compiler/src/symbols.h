@@ -15,6 +15,8 @@ enum {
     K_Goto,
     K_Var,
     K_Import,
+    K_Bin,
+    K_For,
 };
 
 typedef struct {

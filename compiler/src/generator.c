@@ -10,11 +10,13 @@ char new_label[MAX_TOKEN_SIZE];
 
 char buf[OUTPUT_BUFFER_SIZE];
 
-void build_label()
+char *build_label()
 {
     label_cnt++;
 
     sprintf(new_label, "_%s%03x", l_prefix, label_cnt);
+
+    return new_label;
 }
 
 
