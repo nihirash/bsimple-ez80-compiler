@@ -3,6 +3,9 @@ obj
 tmp/
 *.tmp
 *.bin
+*.bak
+*.c~
+*.h~
 test.bs
 test.s
 compiler/bsc

@@ -1,0 +1,19 @@
+import "../lib/startup.i"
+
+main(argc, argv) {
+    var i;
+    if argc == 0 {
+        puts("No arguments\r\n");
+
+        exit();
+    }
+
+    printf("Arguments count: %d\r\n\r\n", argc);
+    
+    i = 0;
+    while i < argc {
+        printf(" [ *argv -> %d ] = `%s`\r\n", i, [ *argv -> i ]);
+
+        i = i + 1;
+    }
+}

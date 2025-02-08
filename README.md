@@ -36,8 +36,9 @@ Compiler can be built with almost any standard C compiler(for native Agon versio
 ## Known issues
 
  * No priority in calculations
-
+ * Parenthesis not supported in expressions
  * Need make optimiser(peephole?!) 
+ * Stack allocated vars limited for 40 words(120 bytes) per function call(cause index register usage)
 
 ## License 
 

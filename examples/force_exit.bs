@@ -1,0 +1,11 @@
+import "../lib/startup.i"
+
+fun() {
+    exit();
+}
+
+main() {
+    printf("Hello, world!\r\n");
+    fun();
+    printf("Dead code is here!\r\n");
+}

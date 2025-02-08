@@ -99,9 +99,14 @@ expressions()
     # for accessing to array items can be used special syntax
     
     # This line will store value from var `b` into first element of array `arr`
-    [arr->0] = b;
+    [ arr -> 0 ] = b;
     # Array elements also can be read
-    [arr->1] = [arr->0] * 15;
+    [ arr -> 1 ] = [ arr -> 0 ] * 15;
+
+    b = &arr;
+    # Load value from array that we're received by pointer
+    # Can be used for arguments parsing
+    [ arr -> 0 ] = [ *b -> 1 ];
 
     # Also all comparsion operators can be used in expressions
     # on true statement they will return value `-1` and `0` on false. 
