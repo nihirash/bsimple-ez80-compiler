@@ -12,3 +12,5 @@ all: $(ASSEMBLED)
 
 clean:
 		rm -f $(ASSEMBLED)
+
+format:
