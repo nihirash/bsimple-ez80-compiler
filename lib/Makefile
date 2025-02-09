@@ -1,4 +1,4 @@
-PACKAGES =  startup stdlib files
+PACKAGES =  startup stdlib files arcade
 TARGETS = all clean
 
 $(TARGETS):

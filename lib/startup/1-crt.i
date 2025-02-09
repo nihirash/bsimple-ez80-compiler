@@ -379,3 +379,17 @@ _getc:
   ld sp, ix
   pop ix
   ret
+
+_write:
+  push ix
+  ld ix, 0
+  add ix, sp
+
+  ld hl, (ix + 6)
+  ld bc, (ix + 9)
+  xor a
+  rst.lil $18
+
+  ld sp, ix
+  pop ix
+  ret
