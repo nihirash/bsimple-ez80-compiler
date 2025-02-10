@@ -1,0 +1,89 @@
+import "../lib/startup.i"
+import "../lib/stdlib.i"
+import "../lib/files.i"
+import "../lib/arcade.i"
+
+var px, py;
+
+main() {
+    var i;
+    var stp;
+    
+    vdp_mode(8);
+    set_cursor_mode(0);
+
+    sprites_bmp_reset();
+    
+    agi_load(0, "assets/wow.agi");
+
+    agi_load(1, "assets/hero5.agi");
+    agi_load(2, "assets/hero6.agi");
+    
+    agi_load(3, "assets/hero7.agi");
+    agi_load(4, "assets/hero8.agi");
+
+    agi_load(5, "assets/hero1.agi");
+    agi_load(6, "assets/hero2.agi");
+    agi_load(7, "assets/hero3.agi");
+    agi_load(8, "assets/hero4.agi");
+    
+    putc(17);
+    putc(150);
+
+    cls();
+
+    bitmap_draw(0, 0, 0);
+
+    
+    sprite_select(0);
+    sprite_set_frames(2, 1, 2);
+
+    sprite_position(-10,120);
+    sprite_show();
+    sprites_activate(1);
+
+    for (i=0;i<160;i = i + 1) {
+        sprite_move(1, 0);
+        sprite_next_frame();
+
+        vsync();
+        vsync();
+
+        sprites_update();
+    }
+
+    sprite_set_frames(10, 5, 5, 5, 5, 5, 5, 5, 6, 7, 8);
+    sprite_show();
+
+    for (i=0;i<50;i = i + 1) {
+        sprite_next_frame();
+
+        vsync();
+        vsync();
+        vsync();
+        vsync();
+        vsync();
+        vsync();
+        vsync();
+        vsync();
+
+        sprites_update();
+    }
+
+    sprite_set_frames(2, 3, 4);
+    sprite_show();
+
+    for (i=160;i>0;i = i - 1) {
+        sprite_move(-1, 0);
+        sprite_next_frame();
+
+        vsync();
+        vsync();
+
+        sprites_update();
+    }
+ 
+    sprites_bmp_reset();
+    set_cursor_mode(1);
+    vdp_mode(0);
+}
