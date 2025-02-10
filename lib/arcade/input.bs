@@ -1,0 +1,35 @@
+kbd_check_code(offset, mask) {
+    var ptr;
+    
+    ptr = _kbmap_addr + offset;
+
+    return *ptr & mask != 0;
+}
+
+kbd_is_esc() {
+    return kbd_check_code(14, 7);
+}
+
+kbd_is_left() {
+    return kbd_check_code(3, 2);
+}
+
+kbd_is_right() {
+    return kbd_check_code(15, 2);
+}
+
+kbd_is_up() {
+    return kbd_check_code(7, 2);
+}
+
+kbd_is_down() {
+    return kbd_check_code(6, 2);
+}
+
+kbd_is_z() {
+    return kbd_check_code(12, 2);
+}
+
+kbd_is_x() {
+    return kbd_check_code(8, 4);
+}

@@ -123,7 +123,12 @@ void global_var()
             return;
         }
 
-        if (tok == Comma) continue;
+        if (tok == Comma) {
+            write_global_var(name, WORD_SIZE * size);
+
+            size = 1;
+            continue;
+        }
 
         error(UNEXPECTED_SYMBOL);
     }
@@ -782,7 +787,7 @@ void process_block(char is_fun)
             s = lookup_symbol(current_token);
             while (s && s->type == Keyword && s->offset == K_Var) {
                 process_local_vars();
-                
+
                 token = get_token();
                 s = lookup_symbol(current_token);
             }
@@ -910,6 +915,7 @@ void process_program()
 
     while (!eof) {
         is_buffered = 0;
+
         token = get_token();
         if (eof)
             break;

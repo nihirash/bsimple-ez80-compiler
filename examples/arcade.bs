@@ -3,14 +3,48 @@ import "../lib/stdlib.i"
 import "../lib/files.i"
 import "../lib/arcade.i"
 
-var px, py;
+var px, py, p_speed, p_state, anim_counter;
+
+standing() {
+    if p_state == 0 {
+        return ;
+    }
+
+    sprite_set_frames(10, 5, 5, 5, 5, 5, 5, 5, 6, 7, 8);
+    sprite_show();
+    p_state = 0;
+}
+
+moving_left() {
+    if p_state == -1 {
+        return ;
+    }
+
+    sprite_set_frames(2, 3, 4);
+    sprite_show();
+
+    p_state = -1;
+}
+
+moving_right() {
+    if p_state == 1 {
+        return ;
+    }
+
+    sprite_set_frames(2, 1, 2);
+    sprite_show();
+
+    p_state = 1;
+}
+
 
 main() {
-    var i;
-    var stp;
-    
+    var i, stp;
+
     vdp_mode(8);
     set_cursor_mode(0);
+    
+    kbd_init();
 
     sprites_bmp_reset();
     
@@ -34,54 +68,59 @@ main() {
 
     bitmap_draw(0, 0, 0);
 
+    p_speed = 0;
     
     sprite_select(0);
-    sprite_set_frames(2, 1, 2);
+    
+    sprite_set_frames(10, 5, 5, 5, 5, 5, 5, 5, 6, 7, 8);
 
-    sprite_position(-10,120);
+    px = 120;
+    py = 120;
+
+    sprite_position(px, py);
     sprite_show();
     sprites_activate(1);
 
-    for (i=0;i<160;i = i + 1) {
-        sprite_move(1, 0);
-        sprite_next_frame();
+    repeat {
+        p_speed = 0;
 
-        vsync();
-        vsync();
+        if kbd_is_left() {
+            p_speed = -1;
+        }
 
-        sprites_update();
-    }
+        if kbd_is_right() {
+            p_speed = 1;
+        }
 
-    sprite_set_frames(10, 5, 5, 5, 5, 5, 5, 5, 6, 7, 8);
-    sprite_show();
+        px = px + p_speed + p_speed;
 
-    for (i=0;i<50;i = i + 1) {
-        sprite_next_frame();
+        if p_speed == 0 {
+            standing();
+        }
 
-        vsync();
-        vsync();
-        vsync();
-        vsync();
-        vsync();
-        vsync();
-        vsync();
-        vsync();
+        if p_speed == 1 {
+            moving_right();
+        }
 
-        sprites_update();
-    }
-
-    sprite_set_frames(2, 3, 4);
-    sprite_show();
-
-    for (i=160;i>0;i = i - 1) {
-        sprite_move(-1, 0);
-        sprite_next_frame();
-
-        vsync();
+        if p_speed == -1 {
+            moving_left();
+        }
+        
+        if p_speed {
+            sprite_position(px, py);
+        }
+        
+        if anim_counter == 0 {
+            sprite_next_frame();
+        }
+        
         vsync();
 
         sprites_update();
-    }
+
+        vsync();
+        anim_counter = anim_counter + 1 % 4;
+    } until kbd_is_esc();
  
     sprites_bmp_reset();
     set_cursor_mode(1);
