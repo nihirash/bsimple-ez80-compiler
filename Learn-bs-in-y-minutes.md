@@ -30,9 +30,7 @@ incbin source, "learn.bs"
 var global_var1;
 var global_var2;
 # Arrays can be defined here too. This array will be 30 bytes or 10 elements
-var global_array[10];
-
-var buffer[173]; 
+var global_array[10], buffer[173]; 
 
 # You can define your own functions in any order
 
@@ -69,7 +67,8 @@ hello()
 # Here example of supported expressions
 expressions()
 {
-    var a, b, c, d, arr[3];
+    var a, b, c, d;
+    var arr[3];
     # Variables aren't initialized on startup - it's better initialize it before usage
     a = 3;
     # standard math is available, will be executed in order of scription

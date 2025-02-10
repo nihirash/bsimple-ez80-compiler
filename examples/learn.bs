@@ -2,7 +2,7 @@
 # They're starting from '#' symbol and everything to the end of line will be
 # interpreted as commentary
 
-# There're only one datetype - machine word(24 bit) and all variables are 3 bytes
+# There're only one datetype - machine word(24 bit) and all variables are 3 bytes long
 # (or N*3 bytes for arrays with size of N elements, cause every element if 3 bytes
 # long)
 
@@ -15,13 +15,15 @@ import "../lib/startup.i"
 import "../lib/stdlib.i"
 import "../lib/files.i"
 
+# You can also include binary files into your program(or text files)
+# It will be included with label "source"
+incbin source, "learn.bs"
+
 # Declaring global variables and arrays are possible with var keyword
 var global_var1;
 var global_var2;
 # Arrays can be defined here too. This array will be 30 bytes or 10 elements
-var global_array[10];
-
-var buffer[173]; 
+var global_array[10], buffer[173]; 
 
 # You can define your own functions in any order
 
@@ -58,7 +60,8 @@ hello()
 # Here example of supported expressions
 expressions()
 {
-    var a, b, c, d, arr[3];
+    var a, b, c, d;
+    var arr[3];
     # Variables aren't initialized on startup - it's better initialize it before usage
     a = 3;
     # standard math is available, will be executed in order of scription
@@ -92,9 +95,14 @@ expressions()
     # for accessing to array items can be used special syntax
     
     # This line will store value from var `b` into first element of array `arr`
-    [arr->0] = b;
+    [ arr -> 0 ] = b;
     # Array elements also can be read
-    [arr->1] = [arr->0] * 15;
+    [ arr -> 1 ] = [ arr -> 0 ] * 15;
+
+    b = &arr;
+    # Load value from array that we're received by pointer
+    # Can be used for arguments parsing
+    [ arr -> 0 ] = [ *b -> 1 ];
 
     # Also all comparsion operators can be used in expressions
     # on true statement they will return value `-1` and `0` on false. 
@@ -164,7 +172,6 @@ control()
         printf("Iteration %d\r\n", a);
     }
 }
-
 
 # Language supports several loop statements
 loops() 
@@ -378,4 +385,5 @@ main() {
 
     hello();
     files();
+    loops();
 }
