@@ -9,6 +9,9 @@ __joystick_state:
 __kbmap_addr:
     dl 0
 
+_joystick_enabled:
+    dl 0
+
 ;; Based on Christian Pinder's code from ChuckieEgg
 _joystick_read:
     ld b, 0

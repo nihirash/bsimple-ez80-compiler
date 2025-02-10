@@ -80,15 +80,16 @@ main() {
     sprite_position(px, py);
     sprite_show();
     sprites_activate(1);
+    joystick_enable();
 
     repeat {
         p_speed = 0;
 
-        if kbd_is_left() {
+        if input_is_left() {
             p_speed = -1;
         }
 
-        if kbd_is_right() {
+        if input_is_right() {
             p_speed = 1;
         }
 
@@ -105,21 +106,20 @@ main() {
         if p_speed == -1 {
             moving_left();
         }
-        
-        if p_speed {
-            sprite_position(px, py);
-        }
+
+
+        sprite_position(px, py);
         
         if anim_counter == 0 {
             sprite_next_frame();
         }
+
+        sprites_update();
         
         vsync();
 
-        sprites_update();
+        anim_counter = anim_counter + 1 % 2;
 
-        vsync();
-        anim_counter = anim_counter + 1 % 4;
     } until kbd_is_esc();
  
     sprites_bmp_reset();
