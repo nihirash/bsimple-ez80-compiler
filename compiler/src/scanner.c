@@ -89,40 +89,44 @@ void global_var()
     char name[MAX_TOKEN_SIZE];
     char tok;
 
-    if (get_token() != Id) {
-        error(UNEXPECTED_SYMBOL);
-    }
-
-    if (lookup_symbol(current_token) != 0) {
-        error(CANT_REDEFINE);
-    }
-
-    strcpy(name, current_token);
-    register_glob(name);
-
-    printf("var %s\n", name);
-
-    tok = get_token();
-    if (tok == LS) {
-        if (get_token() == Number) {
-            size = atoi(current_token);
-
-            if (get_token() != RS)
-                error(UNEXPECTED_SYMBOL);
-
-            tok = get_token();
-        } else {
+    while (1) {
+        if (get_token() != Id) {
             error(UNEXPECTED_SYMBOL);
         }
+
+        if (lookup_symbol(current_token) != 0) {
+            error(CANT_REDEFINE);
+        }
+
+        strcpy(name, current_token);
+        register_glob(name);
+
+        printf("var %s\n", name);
+
+        tok = get_token();
+        if (tok == LS) {
+            if (get_token() == Number) {
+                size = atoi(current_token);
+
+                if (get_token() != RS)
+                    error(UNEXPECTED_SYMBOL);
+
+                tok = get_token();
+            } else {
+                error(UNEXPECTED_SYMBOL);
+            }
+        }
+
+        if (tok == EOS) {
+            write_global_var(name, WORD_SIZE * size);
+
+            return;
+        }
+
+        if (tok == Comma) continue;
+
+        error(UNEXPECTED_SYMBOL);
     }
-
-    if (tok == EOS) {
-        write_global_var(name, WORD_SIZE * size);
-
-        return;
-    }
-
-    error(UNEXPECTED_SYMBOL);
 }
 
 void process_local_vars()
@@ -776,9 +780,11 @@ void process_block(char is_fun)
     if (is_fun) {
         if (token == Id) {
             s = lookup_symbol(current_token);
-            if (s && s->type == Keyword && s->offset == K_Var) {
+            while (s && s->type == Keyword && s->offset == K_Var) {
                 process_local_vars();
+                
                 token = get_token();
+                s = lookup_symbol(current_token);
             }
         }
     }
