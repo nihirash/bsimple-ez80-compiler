@@ -1,0 +1,17 @@
+draw_tilemap(offset, level)
+{
+    var x, y, tile;
+    level = level;
+
+    for (y=0;y<16;y = y + 1) {
+        for (x=0;x<20;x = x + 1) {
+            tile = *level & $ff;
+            if tile {
+                bitmap_draw(tile + offset, x * 16, y * 16);
+            }
+
+            level = level + 1;
+        }
+    }
+
+}

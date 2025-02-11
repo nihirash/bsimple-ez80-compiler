@@ -1,0 +1,108 @@
+# Formatted printer(on screen)
+#
+# Support next formatters: 
+#  * %s - string
+#  * %c - character
+#  * %d - decimal
+#  * %o - oct
+#  * %b - binary
+#  * %x - hex
+printerf(ptr, x1) {
+	var cur_char, p;
+
+	cur_char = *ptr & 255;
+	p = &x1;
+
+	while cur_char {
+		if cur_char != '%' {
+			printerc(cur_char);
+		}
+
+		if cur_char == '%' {
+			ptr = ptr + 1;
+			cur_char = *ptr & 255;
+
+			if cur_char == 's' {
+				puts(*p);
+				p = p + 3;
+			}
+
+			if cur_char == 'c' {
+				printerc(*p & 255);
+				p = p + 3;
+			}
+
+			if cur_char == 'd' {
+				printern(*p, 10);
+				p = p + 3;
+			}
+
+			if cur_char == 'o' {
+				printern(*p, 8);
+				p = p + 3;
+			}
+
+			if cur_char == 'b' {
+				printern(*p, 2);
+				p = p + 3;
+			}
+
+			if cur_char == 'x' {
+				printerx(*p);
+
+				p = p + 3;
+			}
+
+			if cur_char == '%' {
+				printerc('%');
+			}
+
+		}
+
+		ptr = ptr + 1;
+		cur_char = *ptr & 255;
+	}
+}
+
+# printer number in specified base
+# n is number to printer
+# b is base of number
+printern(n, b) {
+  var a;
+
+  if n == 16 {
+    return printerx(n);
+  }
+	
+  if n < 0 {
+    n = neg(n);
+    printerc('-');
+  }
+
+  a = n / b;
+
+  if a {
+    printern(a, b);
+  }
+
+  printerc( 
+    n % b + '0'
+  );
+}
+
+# printers number as hex value
+printerx(n) {
+	var a, p;
+
+	p = "0123456789ABCDEF";
+
+	a = udiv(n, 16);
+
+	if a {
+		printerx(a);
+	}
+
+	p = n & 15 + p;
+
+	printerc( *p );
+}

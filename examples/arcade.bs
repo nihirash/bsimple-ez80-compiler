@@ -2,6 +2,7 @@ import "../lib/startup.i"
 import "../lib/stdlib.i"
 import "../lib/files.i"
 import "../lib/arcade.i"
+import "assets/level.i"
 
 var px, py, p_speed, p_state, anim_counter;
 
@@ -47,8 +48,6 @@ main() {
     kbd_init();
 
     sprites_bmp_reset();
-    
-    agi_load(0, "assets/wow.agi");
 
     agi_load(1, "assets/hero5.agi");
     agi_load(2, "assets/hero6.agi");
@@ -61,21 +60,22 @@ main() {
     agi_load(7, "assets/hero3.agi");
     agi_load(8, "assets/hero4.agi");
     
+    agi_load(101, "assets/tileset1.agi");
+    agi_load(100, "assets/hero5.agi");
+    agi_load(102, "assets/hero6.agi");
+
     putc(17);
     putc(150);
-
     cls();
-
-    bitmap_draw(0, 0, 0);
+    draw_tilemap(100, &level1);
 
     p_speed = 0;
-    
     sprite_select(0);
     
     sprite_set_frames(10, 5, 5, 5, 5, 5, 5, 5, 6, 7, 8);
 
     px = 120;
-    py = 120;
+    py = 208;
 
     sprite_position(px, py);
     sprite_show();
