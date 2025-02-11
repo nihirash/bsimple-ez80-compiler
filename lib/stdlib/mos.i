@@ -21,6 +21,15 @@ __mos_i2c_close:    EQU $020
 __mos_i2c_write:    EQU $021
 __mos_i2c_read:     EQU $022
 
+_get_mos_vars:
+  push ix
+  ld a, __mos_sysvars
+  rst.lil $08
+  push ix
+  pop hl
+  pop ix
+  ret
+  
 
 _readline:
   push ix

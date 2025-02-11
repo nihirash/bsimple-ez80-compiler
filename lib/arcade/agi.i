@@ -1,12 +1,5 @@
-_vsync:
-  ld a, 23
-  rst.lil $10
-  xor a
-  rst.lil $10
-  ld a, $c3
-  rst.lil $10
-  ret
 
+;; agi_load(number, filename)
 _agi_load:
   push ix
   ld ix, 0
@@ -24,6 +17,7 @@ _agi_load:
   pop ix
   ret
 
+;; bitmap_draw(number, x, y)
 _bitmap_draw:
   push ix
   ld ix, 0

@@ -14,6 +14,10 @@ _joystick_enabled:
 
 ;; Based on Christian Pinder's code from ChuckieEgg
 _joystick_read:
+    ld a, (_joystick_enabled)
+    and a
+    ret z
+    
     ld b, 0
     in0 a, (__PD_DR)
     cpl

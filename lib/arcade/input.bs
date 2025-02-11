@@ -35,38 +35,26 @@ kbd_is_x() {
 }
 
 joystick_is_right() {
-    joystick_read();
-
     return _joystick_state & 1 != 0;
 }
 
 joystick_is_left() {
-    joystick_read();
-
     return _joystick_state & 2 != 0;
 }
 
 joystick_is_down() {
-    joystick_read();
-
     return _joystick_state & 4 != 0;
 }
 
 joystick_is_up() {
-    joystick_read();
-
     return _joystick_state & 8 != 0;
 }
 
 joystick_is_a() {
-    joystick_read();
-
     return _joystick_state & 16 != 0;
 }
 
 joystick_is_b() {
-    joystick_read();
-
     return _joystick_state & 32 != 0;
 }
 

@@ -28,14 +28,14 @@ void write_global_var(char *name, int size)
 
 void fun_head(char *name)
 {
-    sprintf(buf, "\n_%s:\n\tpush ix\n\tld ix, 0\n\tadd ix, sp\n", name);
+    sprintf(buf, "\n_%s:\n\tpush ix\n\tld ix,0\n\tadd ix,sp\n", name);
 
     write_code(buf);
 }
 
 void fun_tail(char *name)
 {
-    sprintf(buf, "_%s_end:\n\tld sp, ix\n\tpop ix\n\tret\n", name);
+    sprintf(buf, "_%s_end:\n\tld sp,ix\n\tpop ix\n\tret\n", name);
 
     write_code(buf);
 }
@@ -45,91 +45,91 @@ void allocate_vars(int size)
     if (!size)
         return;
 
-    sprintf(buf, "\n\tld hl, -%u\n\tadd hl, sp\n\tld sp, hl\n\n", size);
+    sprintf(buf, "\n\tld hl,-%u\n\tadd hl,sp\n\tld sp,hl\n\n", size);
 
     write_code(buf);
 }
 
 void set_accumulator(int value)
 {
-    sprintf(buf, "\tld hl, %i\n", value);
+    sprintf(buf, "\tld hl,%i\n", value);
 
     write_code(buf);
 }
 
 void store_to_stack_var(int offset)
 {
-    sprintf(buf, "\tld (ix+%i), hl\n", offset);
+    sprintf(buf, "\tld (ix+%i),hl\n", offset);
 
     write_code(buf);
 }
 
 void store_to_global_var(char *label)
 {
-    sprintf(buf, "\tld (_%s), hl\n", label);
+    sprintf(buf, "\tld (_%s),hl\n", label);
 
     write_code(buf);
 }
 
 void load_local_variable(int offset)
 {
-    sprintf(buf, "\tld hl, (ix+%i)\n", offset);
+    sprintf(buf, "\tld hl,(ix+%i)\n", offset);
 
     write_code(buf);
 }
 
 void load_local_variable_to_add(int offset)
 {
-    sprintf(buf, "\tld de, (ix+%i)\n", offset);
+    sprintf(buf, "\tld de,(ix+%i)\n", offset);
 
     write_code(buf);
 }
 
 void load_global_variable(char *ptr)
 {
-    sprintf(buf, "\tld hl, (_%s)\n", ptr);
+    sprintf(buf, "\tld hl,(_%s)\n", ptr);
 
     write_code(buf);
 }
 
 void load_global_variable_to_add(char *ptr)
 {
-    sprintf(buf, "\tld de, (_%s)\n", ptr);
+    sprintf(buf, "\tld de,(_%s)\n", ptr);
 
     write_code(buf);
 }
 
 void load_absoulte_addr(char *ptr)
 {
-    sprintf(buf, "\tld hl, (%s)\n", ptr);
+    sprintf(buf, "\tld hl,(%s)\n", ptr);
 
     write_code(buf);
 }
 
 void load_absoulte_addr_to_add(char *ptr)
 {
-    sprintf(buf, "\tld de, (%s)\n", ptr);
+    sprintf(buf, "\tld de,(%s)\n", ptr);
 
     write_code(buf);
 }
 
 void set_accumulator_to_ptr(char *ptr)
 {
-    sprintf(buf, "\tld hl, _%s\n", ptr);
+    sprintf(buf, "\tld hl,_%s\n", ptr);
 
     write_code(buf);
 }
 
 void set_additional(int value)
 {
-    sprintf(buf, "\tld de, %u\n", value);
+    sprintf(buf, "\tld de,%u\n", value);
 
     write_code(buf);
 }
 
 void sum_regs()
 {
-    write_code("\tadd hl, de\n");
+    write_code("\tadd hl,de\n");
 }
 
 void sub_regs()
@@ -159,38 +159,38 @@ void pop_additional()
 
 void swap_regs()
 {
-    write_code("\tex de, hl\n");
+    write_code("\tex de,hl\n");
 }
 
 void store_accum_to_stack_ptr()
 {
-    write_code("\tpop de\n\tex de, hl\n\tld (hl), de\n");
+    write_code("\tpop de\n\tex de,hl\n\tld (hl),de\n");
 }
 
 void set_accumulator_to_stack_ptr(int offset)
 {
-    sprintf(buf, "\tlea hl, ix+%i\n", offset);
+    sprintf(buf, "\tlea hl,ix+%i\n", offset);
 
     write_code(buf);
 }
 
 void set_additional_to_stack_ptr(int offset)
 {
-    sprintf(buf, "\tlea de, ix+%i\n", offset);
+    sprintf(buf, "\tlea de,ix+%i\n", offset);
 
     write_code(buf);
 }
 
 void load_from_acc_ptr()
 {
-    write_code("\tld hl, (hl)\n");
+    write_code("\tld hl,(hl)\n");
 }
 
 void equals_check()
 {
     build_label();
     sprintf(buf,
-            "\tor a\n\tsbc hl, de\n\tld hl, -1\n\tjr z, %s\n\tld hl,0\n%s:\n",
+            "\tor a\n\tsbc hl,de\n\tld hl,-1\n\tjr z,%s\n\tld hl,0\n%s:\n",
             new_label, new_label);
 
     write_code(buf);
@@ -200,7 +200,7 @@ void notequals_check()
 {
     build_label();
     sprintf(buf,
-            "\tor a\n\tsbc hl, de\n\tld hl, -1\n\tjr nz, %s\n\tld hl,0\n%s:\n",
+            "\tor a\n\tsbc hl,de\n\tld hl,-1\n\tjr nz,%s\n\tld hl,0\n%s:\n",
             new_label, new_label);
 
     write_code(buf);
@@ -210,7 +210,7 @@ void greater_check()
 {
     build_label();
     sprintf(buf,
-            "\tcall __cmp\n\tld hl, 0\n\tjp p, %s\n\tld hl, -1\n%s:\n",
+            "\tcall __cmp\n\tld hl,0\n\tjp p,%s\n\tld hl,-1\n%s:\n",
             new_label, new_label);
 
     write_code(buf);
@@ -220,7 +220,7 @@ void greater_or_eq_check()
 {
     build_label();
     sprintf(buf,
-            "\tcall __cmp\n\tld hl, 0\n\tjp m, %s\n\tld hl,-1\n%s:\n",
+            "\tcall __cmp\n\tld hl,0\n\tjp m,%s\n\tld hl,-1\n%s:\n",
             new_label, new_label);
 
     write_code(buf);
@@ -243,16 +243,8 @@ void bit_xor()
 
 void mul_ptr()
 {
-    switch (WORD_SIZE) {
-    case 2:
-        write_code("\add hl, hl\n");
-        return;
-    case 3:
-        write_code("\tpush hl\n\tpop bc\n\tadd hl, hl\n\tadd hl, bc\n");
-        return;
-    default:
-        error(UNIMPLEMENTED);
-    }
+    write_code("\tpush hl\n\tpop bc\n\tadd hl,hl\n\tadd hl,bc\n");
+    return;   
 }
 
 char *string_literal()
@@ -271,14 +263,14 @@ void finish_string_literal()
 
 void set_accumulator_dir_ptr(char *ptr)
 {
-    sprintf(buf, "\tld hl, _%s\n", ptr);
+    sprintf(buf, "\tld hl,_%s\n", ptr);
 
     write_code(buf);
 }
 
 void set_additional_dir_ptr(char *ptr)
 {
-    sprintf(buf, "\tld de, _%s\n", ptr);
+    sprintf(buf, "\tld de,_%s\n", ptr);
 
     write_code(buf);
 }
@@ -287,7 +279,7 @@ void call_proc(char *name, int stack_move)
 {
     if (stack_move) {
         sprintf(buf,
-                "\tcall _%s\n\tex de,hl\n\tld hl, %u\n\tadd hl, sp\n\tld sp, hl\n\tex de,hl\n",
+                "\tcall _%s\n\tex de,hl\n\tld hl,%u\n\tadd hl,sp\n\tld sp,hl\n\tex de,hl\n",
                 name, stack_move);
     } else {
         sprintf(buf, "\tcall _%s\n", name);
@@ -307,7 +299,7 @@ char *check_condition()
 {
     build_label();
 
-    sprintf(buf, "\tld de, 0\n\tor a\n\tsbc hl, de\n\tjp z, %s\n",
+    sprintf(buf, "\tld de,0\n\tor a\n\tsbc hl,de\n\tjp z,%s\n",
             new_label);
 
     write_code(buf);
@@ -317,7 +309,7 @@ char *check_condition()
 
 void jump_if_false(char *label)
 {
-    sprintf(buf, "\tld de, 0\n\tor a\n\tsbc hl, de\n\tjp z, %s\n", label);
+    sprintf(buf, "\tld de,0\n\tor a\n\tsbc hl,de\n\tjp z,%s\n", label);
 
     write_code(buf);
 }
