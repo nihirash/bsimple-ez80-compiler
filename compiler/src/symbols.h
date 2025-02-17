@@ -23,7 +23,7 @@ enum {
 
 typedef struct {
     char type;
-    char offset;
+    int offset;
     char name[MAX_TOKEN_SIZE];
 } Symbol;
 
