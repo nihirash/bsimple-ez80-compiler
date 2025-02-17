@@ -16,7 +16,7 @@ void init_symtable() {
 
 void register_symbol(char *s, char k, char t)
 {
-    char i;
+    int i;
 
     if (symbol_table_pos + 1 >= SYM_TABLE_SIZE) {
         error(SYMBOLS_TABLE_OVERLOAD);
@@ -56,7 +56,7 @@ void register_var(char *s, int offset)
 
 Symbol *lookup_symbol(char *s)
 {
-    char i;
+    int i;
 
     for (i = symbol_table_pos - 1; i != -1; i--)
         if (!strcmp(s, symbols[i].name))
@@ -67,7 +67,7 @@ Symbol *lookup_symbol(char *s)
 
 char is_keyword(char *s)
 {
-    char i;
+    int i;
 
     for (i = symbol_table_pos - 1; i != -1; i--) {
         if (!strcmp(s, symbols[i].name)) {
@@ -80,7 +80,7 @@ char is_keyword(char *s)
 
 void dump_symbols()
 {
-    char i;
+    int i;
     printf("\r\nSymbols table(size %i): \r\n", symbol_table_pos);
 
     for (i = symbol_table_pos - 1; i != -1; i--) {
@@ -108,7 +108,7 @@ void dump_symbols()
 
 void locals_end()
 {
-    char i;
+    int i;
     for (i = symbol_table_pos - 1; i != -1; i--) {
         if (symbols[i].type == Keyword || symbols[i].type == Glob) {
             symbol_table_pos = i + 1;
