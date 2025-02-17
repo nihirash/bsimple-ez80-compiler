@@ -14,7 +14,7 @@ void init_symtable() {
     memset(&symbols, 0, SYM_TABLE_SIZE*sizeof(Symbol));
 }
 
-void register_symbol(char *s, char k, char t)
+void register_symbol(char *s, int k, char t)
 {
     int i;
 
@@ -29,7 +29,7 @@ void register_symbol(char *s, char k, char t)
     symbol_table_pos++;
 }
 
-void register_keyword(char *s, char k)
+void register_keyword(char *s, int k)
 {
     register_symbol(s, k, Keyword);
 }
