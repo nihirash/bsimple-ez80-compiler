@@ -189,7 +189,7 @@ void calc_indexed_address()
 {
     char token;
     Symbol *s;
-    int num;
+    int num = 0;
 
     token = get_token();
 
@@ -561,10 +561,6 @@ void process_assing()
 
 void indexed_assignation()
 {
-    char token;
-    int num;
-    Symbol *s;
-
     calc_indexed_address();
     push_accumulator();
 
@@ -575,16 +571,15 @@ void indexed_assignation()
         error(UNEXPECTED_SYMBOL);
 
     store_accum_to_stack_ptr();
-
 }
 
 void process_fun_call(char *fun)
 {
     char fun_to_call[MAX_TOKEN_SIZE];
-    char token, args, c;
-    char is_last;
-    int pointer;
-    unsigned int rewind_ptr, exit_ptr;
+    char token, args = 0, c;
+    char is_last = 0;
+    int pointer = 0;
+    unsigned int rewind_ptr = 0, exit_ptr = 0;
     int p_balance;
 
     args = 0;
@@ -803,7 +798,7 @@ void process_block(char is_fun)
 
 void process_function()
 {
-    char token, arg_offset;
+    int token, arg_offset;
     arg_offset = WORD_SIZE * 2;
 
     strcpy(current_function, current_token);
