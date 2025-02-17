@@ -12,6 +12,7 @@
 /// @brief Prepares keywords initial state
 void init_keyword_table()
 {
+    init_symtable();
     register_keyword("label", K_Label);
     register_keyword("goto", K_Goto);
     register_keyword("incbin", K_Bin);

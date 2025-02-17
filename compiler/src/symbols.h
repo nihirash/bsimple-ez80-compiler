@@ -74,3 +74,5 @@ void dump_symbols();
 
 /// @brief      Remove from symbols table all local definitions
 void locals_end();
+
+void init_symtable();
