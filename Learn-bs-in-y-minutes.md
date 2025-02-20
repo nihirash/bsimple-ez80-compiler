@@ -282,7 +282,9 @@ stdlib()
     cls();
     # positions cursor on screen
     gotoxy(10, 10);
-
+    
+    # Wait for specified frames count(5 seconds)
+    sleepf(300); 
     # puts single character
     putc('*');
 

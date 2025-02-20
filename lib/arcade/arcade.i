@@ -13,12 +13,6 @@ _arcade_init:
   ld bc, @end - @cmd
   rst.lil $18
   
-  push ix
-  ld a, __mos_sysvars
-  rst.lil $08
-  ld (_frame_counter_ptr), ix
-  pop ix
-
   ld sp, ix
   pop ix
   ret
@@ -52,6 +46,3 @@ _flip:
 @cmd:
   db 23, 0, $c3
 
-
-_frame_counter_ptr:
-  dl 0

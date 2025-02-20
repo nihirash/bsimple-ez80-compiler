@@ -1,0 +1,4 @@
+# Stops execution for while
+sleep(seconds) {
+    sleepf(seconds * 60);
+}

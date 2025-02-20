@@ -3,7 +3,6 @@
 __mos_getkey:       EQU	$000
 __mos_load:         EQU $001
 __mos_save:         EQU $002
-__mos_sysvars:      EQU $008
 __mos_editline:     EQU $009
 __mos_getError:     EQU $00F
 __mos_oscli:        EQU $010
