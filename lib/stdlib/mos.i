@@ -3,7 +3,6 @@
 __mos_getkey:       EQU	$000
 __mos_load:         EQU $001
 __mos_save:         EQU $002
-__mos_sysvars:      EQU $008
 __mos_editline:     EQU $009
 __mos_getError:     EQU $00F
 __mos_oscli:        EQU $010
@@ -21,6 +20,15 @@ __mos_i2c_close:    EQU $020
 __mos_i2c_write:    EQU $021
 __mos_i2c_read:     EQU $022
 
+_get_mos_vars:
+  push ix
+  ld a, __mos_sysvars
+  rst.lil $08
+  push ix
+  pop hl
+  pop ix
+  ret
+  
 
 _readline:
   push ix

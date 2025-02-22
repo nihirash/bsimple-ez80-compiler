@@ -1,0 +1,42 @@
+import "../lib/startup.i"
+
+main() {
+    var i;
+    puts("While loop\r\n");
+
+    i = 1;
+    while i < 10 {
+        printf("Iteration %d\r\n", i);
+        i = i + 1;
+    }
+
+    puts("\r\nFor loop\r\n");
+
+    for (i = 1; i <= 10; i = i + 1) {
+        printf("Iteration %d\r\n", i);
+    }
+
+    puts("Skip initializing\r\n");
+
+    i=0;
+
+    for (;i<10;i = i + 1) {
+        printf("Iteration %d\r\n", i);
+    }
+
+    puts("Skip increment\r\n");
+
+    for (i=0;i<10;) {
+        printf("Iteration %d\r\n", i);
+        i = i + 1;
+    }
+
+    puts("\r\nRepeat until\r\n");
+
+    i = 0;
+
+    repeat {
+        printf("Iteration %d\r\n", i);
+        i = i + 1;
+    } until i == 10;
+}

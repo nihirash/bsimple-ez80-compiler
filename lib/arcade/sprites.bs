@@ -1,0 +1,28 @@
+sprite_add_frames(count, x1) 
+{
+    var ptr;
+
+    ptr = &x1;
+
+    repeat {
+        sprite_add_bitmap(*ptr);
+
+        ptr = ptr + 3;
+        count = count - 1;
+    } until count == 0;
+}
+
+sprite_set_frames(count, x1) 
+{
+    var ptr;
+    
+    sprite_clear();
+    ptr = &x1;
+
+    repeat {
+        sprite_add_bitmap(*ptr);
+
+        ptr = ptr + 3;
+        count = count - 1;
+    } until count == 0;
+}

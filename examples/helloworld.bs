@@ -1,4 +1,5 @@
 import "../lib/startup.i"
+import "../lib/stdlib.i"
 
 main() {
     var s;
@@ -7,5 +8,8 @@ main() {
 
     printf("Hello, world!\r\n");
 
-    printf("Formatter: %%d: %d %%o: %o %%x: %x %%s: %s\r\n", 123, -5656, -123, s);
+    # Parse number with specified base
+    printf("\r\nNum parsers: %b\r\n", parse_num("11100111", 2));
+
+    printf("Formatter: %%d: %d %%o: %o %%x: %x %%s: %s\r\n", parse_dec("-00123z"), parse_oct("-5656"), parse_hex("AbCdEf"), s);
 }

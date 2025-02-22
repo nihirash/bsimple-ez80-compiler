@@ -1,0 +1,116 @@
+kbd_check_code(offset, mask) {
+    var ptr;
+    
+    ptr = _kbmap_addr + offset;
+
+    return *ptr & mask != 0;
+}
+
+kbd_is_esc() {
+    return kbd_check_code(14, 1);
+}
+
+kbd_is_left() {
+    return kbd_check_code(3, 2);
+}
+
+kbd_is_right() {
+    return kbd_check_code(15, 2);
+}
+
+kbd_is_up() {
+    return kbd_check_code(7, 2);
+}
+
+kbd_is_down() {
+    return kbd_check_code(6, 2);
+}
+
+kbd_is_z() {
+    return kbd_check_code(12, 2);
+}
+
+kbd_is_x() {
+    return kbd_check_code(8, 4);
+}
+
+joystick_is_right() {
+    return _joystick_state & 1 != 0;
+}
+
+joystick_is_left() {
+    return _joystick_state & 2 != 0;
+}
+
+joystick_is_down() {
+    return _joystick_state & 4 != 0;
+}
+
+joystick_is_up() {
+    return _joystick_state & 8 != 0;
+}
+
+joystick_is_a() {
+    return _joystick_state & 16 != 0;
+}
+
+joystick_is_b() {
+    return _joystick_state & 32 != 0;
+}
+
+joystick_enable() {
+    joystick_enabled = -1;
+}
+
+joystick_disable() {
+    joystick_enabled = 0;
+}
+
+input_is_left() {
+    if joystick_enabled == 0 {
+        return kbd_is_left();
+    }
+
+    return joystick_is_left() | kbd_is_left();
+}
+
+input_is_right() {   
+    if joystick_enabled == 0 {
+        return kbd_is_right();
+    }
+
+    return joystick_is_right() | kbd_is_right();
+}
+
+input_is_up() {
+    if joystick_enabled == 0 {
+        return kbd_is_up();
+    }
+
+    return joystick_is_up() | kbd_is_up();
+}
+
+
+input_is_down() {
+    if joystick_enabled == 0 {
+        return kbd_is_down();
+    }
+
+    return joystick_is_down() | kbd_is_down();
+}
+
+input_is_a() {
+    if joystick_enabled == 0 {
+        return kbd_is_z();
+    }
+
+    return joystick_is_a() | kbd_is_z();
+}
+
+input_is_b() {
+    if joystick_enabled == 0 {
+        return kbd_is_x();
+    }
+
+    return joystick_is_b() | kbd_is_x();
+}

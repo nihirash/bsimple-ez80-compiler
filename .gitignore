@@ -12,5 +12,6 @@ compiler/bsc
 stdlib/startup.i
 stdlib/src/*.s
 examples/*.s
+examples/arcade/
 lib/*.i
 .vscode/

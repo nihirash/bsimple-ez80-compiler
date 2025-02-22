@@ -12,13 +12,18 @@
 /// @brief Prepares keywords initial state
 void init_keyword_table()
 {
+    init_symtable();
     register_keyword("label", K_Label);
     register_keyword("goto", K_Goto);
+    register_keyword("incbin", K_Bin);
     register_keyword("import", K_Import);
+    register_keyword("repeat", K_Repeat);
+    register_keyword("until", K_Until);
     register_keyword("while", K_While);
     register_keyword("if", K_If);
     register_keyword("var", K_Var);
     register_keyword("return", K_Return);
+    register_keyword("for", K_For);
 }
 
 int main(int argc, char **argv)

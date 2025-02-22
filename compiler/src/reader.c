@@ -47,6 +47,16 @@ void buff_left()
     }
 }
 
+char peek_left()
+{
+    int tmp_ptr = buf_ptr;
+    tmp_ptr--;
+    if (tmp_ptr < 0) {
+        tmp_ptr = ARGS_BUFFER_SIZE - 1;
+    }
+    return buffer[tmp_ptr];
+}
+
 void buff_right()
 {
     buf_ptr++;
@@ -93,7 +103,7 @@ char rewind_buffer(unsigned int rewind_ptr)
 
                 if (buffer[buf_ptr] == '"') {
 
-                    if (buffer[(buf_ptr - 1) % ARGS_BUFFER_SIZE] == '\\') {
+                    if (peek_left() == '\\') {
                         buff_left();
                         buff_left();
                     }

@@ -1,0 +1,107 @@
+
+# Checks if string literal is decimal
+is_decimal(char) {
+    return char >= '0' & char <= '9';
+}
+
+# parses binary number from string to return value
+parse_bin(txt_ptr) {
+    return parse_num(txt_ptr, 2);
+}
+
+# parses decimal number from string to return value
+parse_dec(txt_ptr) {
+    return parse_num(txt_ptr, 10);
+}
+
+# parses oct. number from string to return value
+parse_oct(txt_ptr) {
+    return parse_num(txt_ptr, 8);
+}
+
+# parses hex. number from string to return value
+parse_hex(txt_ptr) {
+    var hex_chars, number, c, sign, n;
+    hex_chars = "0123456789ABCDEF";
+
+    if *txt_ptr & $ff == '-' {
+        sign = -1;
+
+        txt_ptr = txt_ptr + 1;
+    } 
+
+    number = 0;
+    sign = 0;
+
+    # chr uppercase also filters other 2 bytes, keeping only character
+    c = chruppercase(*txt_ptr);
+    while c {
+        n = strchr(hex_chars, c);
+        n = n - hex_chars;
+
+        if n < 0 {
+            goto exit;
+        }
+
+        # We should multiply something on zero
+        if number {
+            number = number * $10;
+        }
+
+        number = number + n;
+        
+        txt_ptr = txt_ptr + 1;
+        c = chruppercase(*txt_ptr);
+    }
+
+    label exit;
+
+    # If there was sign - restore it
+    if sign {
+        number = neg(number);
+    }
+
+    return number;
+}
+
+# parses less than decimal base number from string to return value
+parse_num(txt_ptr, base) {
+    var sign, number, c;
+    
+    number = 0;
+    sign = 0;
+
+    if *txt_ptr & $ff == '-' {
+        sign = -1;
+
+        txt_ptr = txt_ptr + 1;
+    }
+    
+    c = *txt_ptr & $ff;
+
+    while c {
+        # Find non numberic character - end of parsing
+        if is_decimal(c) == 0 {
+            goto exit;
+        }
+
+        # We should multiply something on zero
+        if number {
+            number = number * base;
+        }
+ 
+        number = c - '0' + number;
+
+        txt_ptr = txt_ptr + 1;
+        c = *txt_ptr & $ff;
+    }
+
+    label exit;
+
+    # If there was sign - restore it
+    if sign {
+        number = neg(number);
+    }
+
+    return number;
+}

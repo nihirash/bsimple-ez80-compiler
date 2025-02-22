@@ -4,6 +4,12 @@ BSimple is the compiled language for eZ80 CPU(mostly for Agon computers) that ca
 
 BSimple is mid-level programming language and compiles to assembly. All identifiers are case-sensitive - so `ID`, `Id` and `iD` are different identifiers.
 
+All numbers are 24 bit long(and treated as signed numbers usually). 
+
+Values placed in range −8,388,608 to 8,388,607(in decimal).
+
+You can use also heximal values as long as decial prefix for hex values is `$`(for example `a = $7ffd;` is just the same as `a = 32765`).
+
 ```perl
 # In BSimple language only single line comments available 
 # They're starting from '#' symbol and everything to the end of line will be
@@ -22,13 +28,17 @@ import "../lib/startup.i"
 import "../lib/stdlib.i"
 import "../lib/files.i"
 
+# You can also include binary files into your program(or text files)
+# It will be included with label "source"
+incbin source, "learn.bs"
+
+var zero;
+
 # Declaring global variables and arrays are possible with var keyword
 var global_var1;
 var global_var2;
 # Arrays can be defined here too. This array will be 30 bytes or 10 elements
-var global_array[10];
-
-var buffer[173]; 
+var global_array[10], buffer[173]; 
 
 # You can define your own functions in any order
 
@@ -65,7 +75,8 @@ hello()
 # Here example of supported expressions
 expressions()
 {
-    var a, b, c, d, arr[3];
+    var a, b, c, d;
+    var arr[3];
     # Variables aren't initialized on startup - it's better initialize it before usage
     a = 3;
     # standard math is available, will be executed in order of scription
@@ -170,6 +181,54 @@ control()
 
         a = a + 1;
     }
+
+    # For loop produce less efficient code but can be used too
+    for (a = 1; a < 10; a = a + 1) {
+        printf("Iteration %d\r\n", a);
+    }
+}
+
+# Language supports several loop statements
+loops() 
+{
+    var i;
+    puts("While loop\r\n");
+
+    i = 1;
+    while i < 10 {
+        printf("Iteration %d\r\n", i);
+        i = i + 1;
+    }
+
+    puts("\r\nFor loop\r\n");
+    # C-like for loop, if you miss them
+    for (i = 1; i <= 10; i = i + 1) {
+        printf("Iteration %d\r\n", i);
+    }
+
+    puts("Skip initializing\r\n");
+
+    i=0;
+    # You can bypass initializing step
+    for (;i<10;i = i + 1) {
+        printf("Iteration %d\r\n", i);
+    }
+
+    puts("Skip increment\r\n");
+    # Or Increment
+    for (i=0;i<10;) {
+        printf("Iteration %d\r\n", i);
+        i = i + 1;
+    }
+
+    puts("\r\nRepeat until\r\n");
+    i = 0;
+    # Or repeat-until for Pascal fans
+    #(or if it fits better for your tasks)
+    repeat {
+        printf("Iteration %d\r\n", i);
+        i = i + 1;
+    } until i == 10;
 }
 
 # Examples of usage standard library
@@ -181,6 +240,7 @@ stdlib()
     vdp_mode(3);    # Switches videomode
     exec("ls -l");  # Execute any MOS command
     
+    puts("\r\nNow enter some here: ");
     # Reads line using MOS text input handler
     # First argument - input buffer, second - max lenght in bytes
     #
@@ -224,9 +284,14 @@ stdlib()
     # strcat appends second string to first and stores in buffer of first string
     strcat(&line, "\r\n");    
 
+    # strchr returns substring that starts with specified symbol
+    printf("\r\n%s\r\n", strchr("Hello, world", ' '));
+
     # strstr(src, substr) finds the first occurrence of `substr` in `str` and
     # returns pointer to start of first occurrance
-    printf("%s", strstr(&line, "my"));
+    printf("\r\n%s\r\n", strstr(&line, "my"));
+
+    sleep(5);
     
     cls();
     # positions cursor on screen
@@ -234,6 +299,11 @@ stdlib()
 
     # puts single character
     putc('*');
+
+    puts("Waiting 5 seconds");
+
+    # Wait for specified frames count(for 60Hz modes - just 5 seconds)
+    sleepf(300); 
 
     # Switches cursor visibility
     set_cursor_mode(0);
@@ -245,6 +315,16 @@ stdlib()
     set_cursor_mode(1);
     # Makes noise
     beep();
+
+    puts("\r\nNow waiting one second and playing chord!\r\n");
+    # Wait for one second
+    sleep(1);
+
+    # play note 
+    # Channel, Volume, Freq, Duration(ms)
+    play_note(0, 120, 165, 500);
+    play_note(1, 100, 196, 500);
+    play_note(2, 90,  247, 500);
 }
 
 # File operations
@@ -328,9 +408,17 @@ files() {
     delete("file.tmp");
 }
 
+number_parsers() {
+    # Standard library includes simple parsers for numbers now
+    printf("%b %o %d %x\r\n", parse_bin("11100111"), parse_oct("123"), parse_dec("-12345"), parse_hex("AbCd88"));
+}
+
 # Entry point for programs usually should be called as main function
 # I've let keep this tradition alive
 main() {
+    zero = 0;
+
+    puts(&source);
     # You can make all your own stuff here
     # or call functions
     printf("\r\n%d\r\n", sum(5, 5));
@@ -341,6 +429,8 @@ main() {
 
     hello();
     files();
+    loops();
+    number_parsers();
 }
 ```
 

@@ -1,0 +1,12 @@
+import "../lib/startup.i"
+
+# Defines label and imports binary
+incbin source, "include_binary.bs"
+
+var end;
+
+main() {
+    end = 0;
+    puts(&source);
+}
+

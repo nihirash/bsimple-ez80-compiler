@@ -1,0 +1,9 @@
+import "../lib/startup.i"
+import "../lib/printer.i"
+
+main() 
+{
+    enable_printer();
+    printerf("Hello, world! %x\r\n", 123456);
+    disable_printer();
+}

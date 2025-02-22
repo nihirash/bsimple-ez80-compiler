@@ -3,6 +3,8 @@
   org $40000
   jp _start
 
+__mos_sysvars:      EQU $008
+
 ___argc:
   dl 0
 ___argv:
@@ -29,6 +31,7 @@ _start:
   push hl
   ld hl, (___argc)
   push hl
+  call __init_vars
   call _main
 
 _exit:
@@ -93,3 +96,15 @@ ___parse_args:
     ret nz
     inc hl
     jr @skip_spaces
+
+
+__init_vars:
+  push ix
+  ld a, __mos_sysvars
+  rst.lil $08
+  ld (_frame_counter_ptr), ix
+  pop ix
+  ret
+
+_frame_counter_ptr:
+    dl 0
