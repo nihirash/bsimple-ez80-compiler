@@ -232,6 +232,7 @@ stdlib()
     vdp_mode(3);    # Switches videomode
     exec("ls -l");  # Execute any MOS command
     
+    puts("\r\nNow enter some here: ");
     # Reads line using MOS text input handler
     # First argument - input buffer, second - max lenght in bytes
     #
@@ -282,11 +283,14 @@ stdlib()
     cls();
     # positions cursor on screen
     gotoxy(10, 10);
-    
-    # Wait for specified frames count(5 seconds)
-    sleepf(300); 
+
     # puts single character
     putc('*');
+
+    puts("Waiting 5 seconds");
+
+    # Wait for specified frames count(for 60Hz modes - just 5 seconds)
+    sleepf(300); 
 
     # Switches cursor visibility
     set_cursor_mode(0);
@@ -298,6 +302,16 @@ stdlib()
     set_cursor_mode(1);
     # Makes noise
     beep();
+
+    puts("\r\nNow waiting one second and playing chord!\r\n");
+    # Wait for one second
+    sleep(1);
+
+    # play note 
+    # Channel, Volume, Freq, Duration(ms)
+    play_note(0, 120, 165, 500);
+    play_note(1, 100, 196, 500);
+    play_note(2, 90,  247, 500);
 }
 
 # File operations
