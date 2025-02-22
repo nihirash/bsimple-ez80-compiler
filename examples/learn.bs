@@ -343,7 +343,9 @@ files() {
     flseek(fp, 100);
 
     # If we need move more than on 16Mb - you can use flseek with extension
-    flseek_ext(fp, 100, 1);
+    
+    # P.S. Disabled cause creating files more than 16MBs is VERY slow on real HW
+    #flseek_ext(fp, 100, 1);
     
     fputs(fp, "100 bytes after start file");
     
