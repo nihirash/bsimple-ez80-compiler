@@ -271,9 +271,14 @@ stdlib()
     # strcat appends second string to first and stores in buffer of first string
     strcat(&line, "\r\n");    
 
+    # strchr returns substring that starts with specified symbol
+    printf("\r\n%s\r\n", strchr("Hello, world", ' '));
+
     # strstr(src, substr) finds the first occurrence of `substr` in `str` and
     # returns pointer to start of first occurrance
-    printf("%s", strstr(&line, "my"));
+    printf("\r\n%s\r\n", strstr(&line, "my"));
+
+    sleep(5);
     
     cls();
     # positions cursor on screen
@@ -390,6 +395,11 @@ files() {
     delete("file.tmp");
 }
 
+number_parsers() {
+    # Standard library includes simple parsers for numbers now
+    printf("%b %o %d %x\r\n", parse_bin("11100111"), parse_oct("123"), parse_dec("-12345"), parse_hex("AbCd88"));
+}
+
 # Entry point for programs usually should be called as main function
 # I've let keep this tradition alive
 main() {
@@ -407,4 +417,5 @@ main() {
     hello();
     files();
     loops();
+    number_parsers();
 }

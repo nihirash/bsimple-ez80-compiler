@@ -133,3 +133,23 @@ _strchr:
   or a
   sbc hl, hl
   ret
+
+_chruppercase:
+  ld hl, 3
+  add hl, sp
+  ld a, (hl)
+
+;; Just apply mask for a-z
+  cp 'a'
+  jr c, @exit
+
+  cp 'z' + 1
+  jr nc, @exit
+
+  and #df
+
+@exit:
+  or a 
+  sbc hl, hl
+  ld l, a
+  ret
