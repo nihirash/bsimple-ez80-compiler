@@ -4,6 +4,12 @@ BSimple is the compiled language for eZ80 CPU(mostly for Agon computers) that ca
 
 BSimple is mid-level programming language and compiles to assembly. All identifiers are case-sensitive - so `ID`, `Id` and `iD` are different identifiers.
 
+All numbers are 24 bit long(and treated as signed numbers usually). 
+
+Values placed in range −8,388,608 to 8,388,607(in decimal).
+
+You can use also heximal values as long as decial prefix for hex values is `$`(for example `a = $7ffd;` is just the same as `a = 32765`).
+
 ```perl
 # In BSimple language only single line comments available 
 # They're starting from '#' symbol and everything to the end of line will be
@@ -278,9 +284,14 @@ stdlib()
     # strcat appends second string to first and stores in buffer of first string
     strcat(&line, "\r\n");    
 
+    # strchr returns substring that starts with specified symbol
+    printf("\r\n%s\r\n", strchr("Hello, world", ' '));
+
     # strstr(src, substr) finds the first occurrence of `substr` in `str` and
     # returns pointer to start of first occurrance
-    printf("%s", strstr(&line, "my"));
+    printf("\r\n%s\r\n", strstr(&line, "my"));
+
+    sleep(5);
     
     cls();
     # positions cursor on screen
@@ -397,6 +408,11 @@ files() {
     delete("file.tmp");
 }
 
+number_parsers() {
+    # Standard library includes simple parsers for numbers now
+    printf("%b %o %d %x\r\n", parse_bin("11100111"), parse_oct("123"), parse_dec("-12345"), parse_hex("AbCd88"));
+}
+
 # Entry point for programs usually should be called as main function
 # I've let keep this tradition alive
 main() {
@@ -414,6 +430,7 @@ main() {
     hello();
     files();
     loops();
+    number_parsers();
 }
 ```
 
