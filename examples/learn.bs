@@ -19,6 +19,8 @@ import "../lib/files.i"
 # It will be included with label "source"
 incbin source, "learn.bs"
 
+var zero;
+
 # Declaring global variables and arrays are possible with var keyword
 var global_var1;
 var global_var2;
@@ -391,6 +393,9 @@ files() {
 # Entry point for programs usually should be called as main function
 # I've let keep this tradition alive
 main() {
+    zero = 0;
+
+    puts(&source);
     # You can make all your own stuff here
     # or call functions
     printf("\r\n%d\r\n", sum(5, 5));
