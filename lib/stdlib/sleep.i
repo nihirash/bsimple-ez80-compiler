@@ -14,7 +14,7 @@ _sleepf:
 
     ld hl, (_frame_counter_ptr)
     ld a, (hl)
-  @wait:
+@wait:
     cp (hl)
     jr z, @wait
 
