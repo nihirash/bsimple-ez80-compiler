@@ -1,0 +1,242 @@
+# BSimple preprocessor/builder
+
+import "../lib/moslet.i"
+import "../lib/stdlib.i"
+import "../lib/files.i"
+
+# File handle for resulting file
+var f_output;
+# Position on file stack
+var f_stack_pos;
+# Stack of files for including
+var f_input[10];
+# Base name that passed as argument
+var base_name[40];
+# File name of main file
+var main_source[40];
+# Here will be parsed file name for importing
+var import_source[40];
+# Resulting file after preprocessing
+var output_name[40];
+# Current file that processing
+var cur_file;
+# Character under current "cursor"
+var cur_c;
+# Flag that it's first line in file
+var first_line;
+
+# Just check for spaces and tabs
+is_space(c) {
+  if c == $20 {
+    return -1;
+  }
+
+  if c == 9 {
+    return -1;
+  }
+
+  if c == 13 {
+    return -1;
+  }
+
+  if c == 10 {
+    return -1;
+  }
+
+  return 0;
+}
+
+skip_spaces() {
+while is_space(cur_c) {
+
+    if feof(cur_file) {
+        return ;
+    }
+
+    cur_c = fgetc(cur_file);
+}    
+}
+
+# Checks - is new line started
+is_new_line() {
+    var result;
+    
+    if first_line {
+        first_line = 0;
+        
+        return -1;
+    }   
+
+    result = 0;
+
+    label repeat_check;
+    if cur_c == 13 {
+        result = -1;
+        cur_c = fgetc(cur_file);
+        goto repeat_check;
+    }
+
+    if cur_c == 10 {
+        result = -1;
+        cur_c = fgetc(cur_file);
+        goto repeat_check;
+    }
+
+    return result;
+}
+
+end_line() {
+    cur_c = fgetc(cur_file);
+    while cur_c != 13 & cur_c != 10 {
+        
+        if feof(cur_file) {
+            return ;
+        }
+
+        cur_c = fgetc(cur_file);
+    }
+}
+
+# Include file preprocessor
+include_check() {
+    var pos;
+    pos = &import_source;
+    if fgetc(cur_file) != 'i' {
+        return end_line();
+    }
+
+    if fgetc(cur_file) != 'n' {
+        return end_line();
+    }
+
+    if fgetc(cur_file) != 'c' {
+        return end_line();
+    }
+
+    if fgetc(cur_file) != 'l' {
+        return end_line();
+    }
+
+    if fgetc(cur_file) != 'u' {
+        return end_line();
+    }
+
+    if fgetc(cur_file) != 'd' {
+        return end_line();
+    }
+
+    if fgetc(cur_file) != 'e' {
+        return end_line();
+    }
+    
+    cur_c = fgetc(cur_file);
+    
+    skip_spaces();
+
+    if cur_c != '"' {
+        return end_line();
+    }
+
+    cur_c = fgetc(cur_file);
+
+    while cur_c != '"' {
+        if feof(cur_file) {
+            fclose(0);
+            puts("\r\nERROR!\r\nExpected end of string\r\n");
+            exit();
+        }
+
+        *pos = cur_c;
+        pos = pos + 1;
+        cur_c = fgetc(cur_file);
+    }
+    
+    end_line(); 
+    process(&import_source);    
+}
+
+# Processing source code
+process(filename) {
+    printf("Processing file: %s\r\n", filename);
+
+    f_stack_pos = f_stack_pos + 1;
+    [f_input->f_stack_pos] = fopen(filename, "r");
+    
+    cur_file = [f_input->f_stack_pos];
+
+    if cur_file == 0 {
+        # Preventing file descriptors leak
+        fclose(0);
+        puts("\r\nERROR! Can't open file!\r\n");
+        exit();
+    }
+
+    fprintf(f_output, "# File %s(depth: %d)\r\n", filename, f_stack_pos);
+    first_line = 1;
+    repeat {
+        cur_c = fgetc(cur_file);
+        if is_new_line() {
+            fputs(f_output, "\r\n");
+            
+            skip_spaces();
+            if cur_c == '#' {
+                include_check();
+
+                goto skip;
+            }
+        }
+
+        if cur_c != '#' {
+            if cur_c { 
+                fputc(f_output, cur_c);
+            }
+        }
+
+        label skip;
+    
+    } until feof(cur_file); 
+
+    fputs(f_output, "\r\n# file ended\r\n");
+
+    f_stack_pos = f_stack_pos - 1;
+    cur_file = [f_input->f_stack_pos];
+}
+
+# Creates build script and executes it
+build() {
+    var fp;
+
+    fp = fopen("build.txt", "w");
+    fprintf(fp, "bsc %s\r\n", &output_name);
+    fprintf(fp, "ez80asm %s_post.s %s.bin\r\n", &base_name, &base_name);
+    fclose(0);
+
+    exec("exec build.txt");
+    delete("build.txt");
+}
+
+main(argc, argv) {
+    puts("BSimple preprocessor and builder\r\n\r\n(c) 2025 Aleksandr Sharikhin\r\n");
+
+    if argc == 0 {
+        puts("\r\nUsage:\r\n bs <filename-without-extension>\r\n");
+        exit();
+    }
+    # building filenames
+    strcpy(&main_source, *argv);
+    strcpy(&base_name, *argv);
+    strcpy(&output_name, &base_name);
+    strcat(&output_name, "_post.bs");
+    strcat(&main_source, ".bs");
+    # Closing all files - cause I'll need more file descriptors
+    fclose(0);
+    f_output = fopen(&output_name, "w");
+    
+    f_stack_pos = -1;
+    # Processing main file
+    process(&main_source);
+    # Closing all opened files
+    fclose(0);
+    # Build file after preprocessing
+    build();
+}

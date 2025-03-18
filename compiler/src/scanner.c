@@ -579,7 +579,7 @@ void process_fun_call(char *fun)
     char token, args = 0, c;
     char is_last = 0;
     int pointer = 0;
-    unsigned int rewind_ptr = 0, exit_ptr = 0;
+    unsigned int rewind_ptr, exit_ptr = 0;
     int p_balance;
 
     args = 0;
@@ -677,7 +677,7 @@ void process_statement(char token)
 
     Symbol *s;
 
-    is_buffered = 0;
+    is_buffered = 0; 
 
     if (token == Mul) {
         process_assign_to_ptr();
@@ -910,7 +910,7 @@ void process_program()
 
     while (!eof) {
         is_buffered = 0;
-
+        
         token = get_token();
         if (eof)
             break;

@@ -21,4 +21,5 @@ format:
 all: install
 
 clean:
-	rm -f $(CROSSBIN)
+	rm -rf $(CROSSBIN) obj/ bin/
+	
