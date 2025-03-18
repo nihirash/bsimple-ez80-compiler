@@ -224,7 +224,7 @@ build() {
 main(argc, argv) {
     var tmp;
 
-    puts("BSimple preprocessor and builder\r\n\r\n(c) 2025 Aleksandr Sharikhin\r\n");
+    puts("BSimple preprocessor and builder\r\n(c) 2025 Aleksandr Sharikhin\r\n");
 
     if argc == 0 {
         puts("\r\nUsage:\r\n bs <filename>\r\n");
@@ -234,7 +234,7 @@ main(argc, argv) {
     # Removing file extension if it was specified
     tmp = strstr(*argv, ".bs");
 
-    if tmp > 0 {
+    if tmp {
         *tmp = 0;
     }
 
