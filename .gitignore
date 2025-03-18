@@ -13,7 +13,7 @@ stdlib/startup.i
 stdlib/src/*.s
 examples/*.s
 tools/*.s
-tools/test.*
+tools/test*.*
 examples/arcade/
 lib/*.i
 .vscode/
