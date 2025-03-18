@@ -12,8 +12,8 @@ compiler/bsc
 stdlib/startup.i
 stdlib/src/*.s
 examples/*.s
-tools/*.s
-tools/test*.*
+native-tools/*.s
+native-tools/test*.*
 examples/arcade/
 lib/*.i
 .vscode/

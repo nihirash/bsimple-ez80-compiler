@@ -27,7 +27,7 @@ var first_line;
 
 # Just check for spaces and tabs
 is_space(c) {
-  if c == $20 {
+  if c == ' ' {
     return -1;
   }
 
@@ -46,15 +46,16 @@ is_space(c) {
   return 0;
 }
 
+# Just skip unsigned characters
 skip_spaces() {
-while is_space(cur_c) {
+    while is_space(cur_c) {
 
-    if feof(cur_file) {
-        return ;
-    }
+        if feof(cur_file) {
+            return ;
+        }
 
-    cur_c = fgetc(cur_file);
-}    
+        cur_c = fgetc(cur_file);
+    }    
 }
 
 # Checks - is new line started
@@ -85,6 +86,7 @@ is_new_line() {
     return result;
 }
 
+# Skip to end of line 
 end_line() {
     cur_c = fgetc(cur_file);
     while cur_c != 13 & cur_c != 10 {
@@ -171,14 +173,17 @@ process(filename) {
         exit();
     }
 
-    fprintf(f_output, "# File %s(depth: %d)\r\n", filename, f_stack_pos);
+    fprintf(f_output, "# File `%s`(depth: %d)\r\n", filename, f_stack_pos);
     first_line = 1;
+    
+    # Processing sources
     repeat {
         cur_c = fgetc(cur_file);
         if is_new_line() {
             fputs(f_output, "\r\n");
             
             skip_spaces();
+            # If line starts from commentary - it can be `include` preprocessor statement
             if cur_c == '#' {
                 include_check();
 
@@ -210,18 +215,29 @@ build() {
     fprintf(fp, "bsc %s\r\n", &output_name);
     fprintf(fp, "ez80asm %s_post.s %s.bin\r\n", &base_name, &base_name);
     fclose(0);
-
+    printf("\r\nStarting compiler and assembler!\r\n\r\n");
     exec("exec build.txt");
     delete("build.txt");
+    # We don't deleting post-processed sources - you can examine them, check errors and/or report issues
 }
 
 main(argc, argv) {
+    var tmp;
+
     puts("BSimple preprocessor and builder\r\n\r\n(c) 2025 Aleksandr Sharikhin\r\n");
 
     if argc == 0 {
-        puts("\r\nUsage:\r\n bs <filename-without-extension>\r\n");
+        puts("\r\nUsage:\r\n bs <filename>\r\n");
         exit();
     }
+
+    # Removing file extension if it was specified
+    tmp = strstr(*argv, ".bs");
+
+    if tmp > 0 {
+        *tmp = 0;
+    }
+
     # building filenames
     strcpy(&main_source, *argv);
     strcpy(&base_name, *argv);
@@ -230,8 +246,19 @@ main(argc, argv) {
     strcat(&main_source, ".bs");
     # Closing all files - cause I'll need more file descriptors
     fclose(0);
+
+    printf("\r\nPost processed file name: %s\r\nResulting binary: %s.bin\r\n\r\n", &output_name, &base_name);
+
+    # Post processed file
     f_output = fopen(&output_name, "w");
-    
+
+    if f_output == 0 {
+        fclose(0);
+        puts("\r\n\r\nERROR! Cannot create resulting file!\r\n");
+        exit();
+    }
+
+    # First entry will be main source file
     f_stack_pos = -1;
     # Processing main file
     process(&main_source);

@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 - Internal buffers are larger now
 
+### Fixed
+
+- `strstr` function now works correctly when substring is located at last characters 
+
 ## [0.0.3] - 22 Feb 2025
 
 ### Added
