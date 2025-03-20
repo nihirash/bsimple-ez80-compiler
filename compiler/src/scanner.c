@@ -677,7 +677,7 @@ void process_statement(char token)
 
     Symbol *s;
 
-    is_buffered = 0; 
+    is_buffered = 0;
 
     if (token == Mul) {
         process_assign_to_ptr();
@@ -910,7 +910,7 @@ void process_program()
 
     while (!eof) {
         is_buffered = 0;
-        
+
         token = get_token();
         if (eof)
             break;

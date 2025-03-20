@@ -8,12 +8,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 ### Added
 
-- `bs` - builder/preprocessor(written itself on bsimple)
+- `bs` - builder/preprocessor(written itself on bsimple and alternative version made on C for crossbuild)
 - Alternative startup import - for building MOSlets.
+- "Notes of a Madman" - history of creating compiler
 
 ### Updated
 
 - Internal buffers are larger now
+- Building configuration for crossbuild moved to Makefile.cross-config 
 
 ### Fixed
 

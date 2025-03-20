@@ -1,4 +1,4 @@
-PACKAGES = compiler lib examples
+PACKAGES = compiler lib cross-tools examples 
 TARGETS = all clean format
 
 default: all

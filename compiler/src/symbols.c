@@ -10,8 +10,9 @@ Symbol symbols[SYM_TABLE_SIZE];
 
 int symbol_table_pos = 0;
 
-void init_symtable() {
-    memset(&symbols, 0, SYM_TABLE_SIZE*sizeof(Symbol));
+void init_symtable()
+{
+    memset(&symbols, 0, SYM_TABLE_SIZE * sizeof(Symbol));
 }
 
 void register_symbol(char *s, int k, char t)

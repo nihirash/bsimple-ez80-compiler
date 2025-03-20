@@ -152,6 +152,7 @@ include_check() {
         pos = pos + 1;
         cur_c = fgetc(cur_file);
     }
+    *pos = 0;
     
     end_line(); 
     process(&import_source);    
@@ -200,6 +201,8 @@ process(filename) {
         label skip;
     
     } until feof(cur_file); 
+    
+    fclose(cur_file);
 
     fputs(f_output, "\r\n# file ended\r\n");
 
