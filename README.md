@@ -19,7 +19,7 @@ Currently, project have no proper documentation but we have [Learn B Simple in Y
  * Extract archive to root of SD card
  * Libraries will be in `/BSimple/lib` directory, examples in `/BSimple/examples`
  
-Manual building process:
+#### Manual building process:
 
  * For building single source file call `bsc <filename>` it will produce file with same name but `.s` extension
  * Build binary using [ez80asm](https://github.com/envenomator/agon-ez80asm) 
@@ -35,9 +35,9 @@ console
 
 You can also create some kind of `build.txt` files that will automate compilation and assembly steps.
 
-Using preprocessor/build tool:
+#### Using preprocessor/build tool
 
- * For building source file call `bs <filename>` - it will build concatenated sources into single file, call `bsc` compiler and `ez80asm` assembler - so you'll can get single binary just in one call
+For building source file call `bs <filename>` - it will build concatenated sources into single file, call `bsc` compiler and `ez80asm` assembler - so you'll can get single binary just in one call
 
 For example: 
 
