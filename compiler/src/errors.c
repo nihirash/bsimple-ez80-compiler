@@ -53,12 +53,17 @@ void error(char code)
         printf
             ("Buffer overrun! Increase ARGS_BUFFER_SIZE in compiler's config or reduce arguments list lenght!");
         break;
+    case FILESTACK_OVERRUN:
+        printf
+            ("File stack overrun! Increase FILESTACK_DEPTH in compiler's config or reduce depth of including sources!");
+        break;
     default:
         printf("Unknown error happens ");
         break;
     }
 
     printf("@ line %u \r\n", get_current_line());
+    printf("> %s\r\n", linebuffer);
 
     close_writer();
 

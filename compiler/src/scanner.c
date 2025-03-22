@@ -864,6 +864,34 @@ void process_import()
     write_code("\n");
 }
 
+void process_include()
+{
+    char c, p;
+    char import_filename[120];
+
+    p = 0;
+
+    if (get_token() != DoubleQuote)
+        error(UNEXPECTED_SYMBOL);
+
+    while (!eof) {
+        c = get_chr();
+
+        if (c == 13 || c == 10)
+            error(UNEXPECTED_SYMBOL);
+
+        if (c == '"')
+            break;
+
+        import_filename[p++] = c;
+    }
+
+    import_filename[p] = 0;
+    printf("Including source code from: %s\r\n", import_filename);
+
+    include_file(import_filename);
+}
+
 void process_binary()
 {
     char c;
@@ -919,6 +947,9 @@ void process_program()
 
         if (s && s->type == Keyword) {
             switch (s->offset) {
+            case K_Include:
+                process_include();
+                break;
             case K_Import:
                 process_import();
                 break;

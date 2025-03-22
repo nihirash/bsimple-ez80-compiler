@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 ### Added
 
-- `bs` - builder/preprocessor(written itself on bsimple and alternative version made on C for crossbuild)
+- Including `.bs` files during compilation(using `include` keyword)
 - Alternative startup import - for building MOSlets.
 - "Notes of a Madman" - history of creating compiler
 
