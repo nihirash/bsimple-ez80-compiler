@@ -49,6 +49,10 @@ void error(char code)
     case TOO_FAR_ON_STACK:
         printf("Trying allocate too far on stack! ");
         break;
+    case BUFFER_OVERRUN:
+        printf
+            ("Buffer overrun! Increase ARGS_BUFFER_SIZE in compiler's config or reduce arguments list lenght!");
+        break;
     default:
         printf("Unknown error happens ");
         break;

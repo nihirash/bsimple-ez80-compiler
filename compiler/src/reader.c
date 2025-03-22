@@ -15,6 +15,7 @@ char buffer[ARGS_BUFFER_SIZE];
 
 int buf_ptr;
 char is_buffered;
+char buffer_enabled;
 
 
 void init_reader(char *filename)
@@ -32,10 +33,20 @@ void init_reader(char *filename)
         error(OPEN_FILE_ISSUE);
 }
 
-void clean_buffer()
+void enable_buffer()
 {
-    for (int i = 0; i < ARGS_BUFFER_SIZE; i++)
+    buffer[0] = '(';
+
+    for (int i = 1; i < ARGS_BUFFER_SIZE; i++)
         buffer[i] = 0;
+
+    buf_ptr = 1;
+    buffer_enabled = 1;
+}
+
+void disable_buffer()
+{
+    buffer_enabled = 0;
 }
 
 void buff_left()
@@ -62,7 +73,9 @@ void buff_right()
     buf_ptr++;
 
     if (buf_ptr == ARGS_BUFFER_SIZE) {
-        buf_ptr = 0;
+        printf("Buffer state: %s\r\n", buffer);
+
+        error(BUFFER_OVERRUN);
     }
 }
 
@@ -117,7 +130,7 @@ char rewind_buffer(unsigned int rewind_ptr)
         }
 
 
-        if (buf_ptr == rewind_ptr) {
+        if (buf_ptr == rewind_ptr || buf_ptr == 0) {
             is_last = 1;
             break;
         }
@@ -147,12 +160,15 @@ char get_chr()
         if (!fread(&c, 1, 1, fp)) {
             eof = 1;
         }
-        buffer[buf_ptr] = c;
+        if (buffer_enabled)
+            buffer[buf_ptr] = c;
     } else {
-        c = buffer[buf_ptr];
+        if (buffer_enabled)
+            c = buffer[buf_ptr];
     }
 
-    buff_right();
+    if (buffer_enabled)
+        buff_right();
 
     if (feof(fp))
         eof = 1;

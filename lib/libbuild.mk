@@ -3,7 +3,7 @@ BUILT := $(SRCS:.bs=.s)
 BSIMPLE := bsc
 
 %.s: %.bs
-		bsc $<
+		$(BSIMPLE) $<
 
 $(RESULT): $(BUILT)
 		cat $(BUILT) > $(RESULT)

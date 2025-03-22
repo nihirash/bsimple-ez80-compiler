@@ -35,4 +35,5 @@ extern char is_buffered;
 /// @brief              Buffer - size can be configured in config.h
 extern char buffer[];
 
-void clean_buffer();
+void enable_buffer();
+void disable_buffer();

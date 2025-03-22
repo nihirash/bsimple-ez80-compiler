@@ -14,12 +14,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 ### Updated
 
-- Internal buffers are larger now
 - Building configuration for crossbuild moved to Makefile.cross-config 
+- `for` loop checks condition before execution of loop's body now
 
 ### Fixed
 
-- `strstr` function now works correctly when substring is located at last characters 
+- `strstr` function now works correctly when substring is located at last characters
+- Arguments buffer now works correctly and handles errors
 
 ## [0.0.3] - 22 Feb 2025
 

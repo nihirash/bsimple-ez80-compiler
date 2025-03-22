@@ -20,6 +20,7 @@ void init_keyword_table()
     register_keyword("repeat", K_Repeat);
     register_keyword("until", K_Until);
     register_keyword("while", K_While);
+    register_keyword("include", K_Include);
     register_keyword("if", K_If);
     register_keyword("var", K_Var);
     register_keyword("return", K_Return);

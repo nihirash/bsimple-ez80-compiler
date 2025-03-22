@@ -40,8 +40,6 @@ void process_for_loop()
     if (token != EOS)
         process_statement(token);
 
-    jump(label_for_body);
-
     write_label(label_for_condition);
     process_expression();
 
@@ -693,11 +691,9 @@ void process_statement(char token)
 
                 break;
             case LP:
-                clean_buffer();
-                buffer[0] = '(';
-                buf_ptr = 1;
+                enable_buffer();
                 process_fun_call(l_value);
-                is_buffered = 0;
+                disable_buffer();
                 token = get_token();
                 if (token != EOS) {
                     error(UNEXPECTED_SYMBOL);
