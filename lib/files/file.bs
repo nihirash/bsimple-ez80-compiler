@@ -149,3 +149,17 @@ fprintx(fp, n) {
 
 	fputc(fp, *p);
 }
+
+# Check file existance
+fexists(filename) {
+    var fp;
+
+    fp = fopen(filename, "r");
+    if fp {
+        fclose(fp);
+
+        return 1;
+    }
+
+    return 0;
+}

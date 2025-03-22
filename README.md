@@ -33,8 +33,6 @@ ez80asm console.s
 console
 ```
 
-You can also create some kind of `build.txt` files that will automate compilation and assembly steps.
-
 #### Using preprocessor/build tool
 
 For building source file call `bs <filename>` - it will build concatenated sources into single file, call `bsc` compiler and `ez80asm` assembler - so you'll can get single binary just in one call
