@@ -4,6 +4,7 @@
 #include "errors.h"
 #include "reader.h"
 #include "writer.h"
+#include "token.h"
 
 void error(char code)
 {
@@ -17,7 +18,7 @@ void error(char code)
         printf("Unexpected end of file! ");
         break;
     case UNEXPECTED_SYMBOL:
-        printf("Unexpected symbol! ");
+        printf("Unexpected symbol!");
         break;
     case OPEN_FILE_ISSUE:
         printf("Cannot open file! ");

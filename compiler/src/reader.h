@@ -41,13 +41,14 @@ char rewind_buffer(unsigned int rewind_ptr);
 extern int buf_ptr;
 /// @brief              Flag that indicates is buffered mode enabled or we should continue processing file
 extern char is_buffered;
+/// @brief              Should we populate arguments buffer?
+extern char is_buffer_writable;
+
 /// @brief              Buffer - size can be configured in config.h
 extern char buffer[];
 
 /// @brief              Additional information if error messages
 extern char linebuffer[LINE_BUFFER_SIZE];
 
-/// @brief              Enables buffer for argument parsing
-void enable_buffer();
-/// @brief              Disables buffer for argument parsing(usual execution)
-void disable_buffer();
+/// @brief              Prepares buffer for argument parsing
+void prepare_buffer();

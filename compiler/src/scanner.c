@@ -263,7 +263,6 @@ char process_value(char is_acc)
 
     is_minus = 0;
     token = get_token();
-
     if (token == Dec) {
         is_minus = 1;
         token = get_token();
@@ -578,14 +577,21 @@ void process_fun_call(char *fun)
     char is_last = 0;
     int pointer = 0;
     unsigned int rewind_ptr, exit_ptr = 0;
-    int p_balance;
+    int p_balance, count;
 
     args = 0;
+    count = 0;
     strcpy(fun_to_call, fun);
+    is_buffer_writable++;
+
+    if (is_buffer_writable == 1) {
+        prepare_buffer();
+    }
 
     rewind_ptr = buf_ptr - 1;
     p_balance = 1;
     for (token = get_token(); p_balance != 0; token = get_token()) {
+        count++;
         if (token == LP) {
             p_balance++;
 
@@ -618,7 +624,8 @@ void process_fun_call(char *fun)
             error(UNEXPECTED_SYMBOL);
         }
     }
-    exit_ptr = buf_ptr;
+
+
     is_buffered++;
     is_last = 0;
     while (!is_last) {
@@ -636,6 +643,8 @@ void process_fun_call(char *fun)
     }
 
     is_buffered--;
+
+    is_buffer_writable--;
     buf_ptr = exit_ptr;
     call_proc(fun_to_call, args * WORD_SIZE);
 }
@@ -691,9 +700,7 @@ void process_statement(char token)
 
                 break;
             case LP:
-                enable_buffer();
                 process_fun_call(l_value);
-                disable_buffer();
                 token = get_token();
                 if (token != EOS) {
                     error(UNEXPECTED_SYMBOL);
@@ -934,6 +941,7 @@ void process_program()
 
     while (!eof) {
         is_buffered = 0;
+        is_buffer_writable = 0;
 
         token = get_token();
         if (eof)

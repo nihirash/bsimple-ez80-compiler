@@ -21,7 +21,7 @@ char linebuffer[LINE_BUFFER_SIZE];
 
 int buf_ptr;
 char is_buffered;
-char buffer_enabled;
+char is_buffer_writable;
 
 
 void init_reader(char *filename)
@@ -29,6 +29,7 @@ void init_reader(char *filename)
     printf("Processing file: %s\r\n", filename);
 
     is_buffered = 0;
+    is_buffer_writable = 0;
     line_number = 1;
     poked = 0;
     eof = 0;
@@ -78,20 +79,13 @@ void filestack_pop()
     fp = filestack[filestack_position];
 }
 
-void enable_buffer()
+void prepare_buffer()
 {
-    buffer[0] = '(';
-
-    for (int i = 1; i < ARGS_BUFFER_SIZE; i++)
+    for (int i = 0; i < ARGS_BUFFER_SIZE; i++)
         buffer[i] = 0;
 
+    buffer[0] = '(';
     buf_ptr = 1;
-    buffer_enabled = 1;
-}
-
-void disable_buffer()
-{
-    buffer_enabled = 0;
 }
 
 void buff_left()
@@ -117,7 +111,7 @@ void buff_right()
 {
     buf_ptr++;
 
-    if (buf_ptr == ARGS_BUFFER_SIZE) {
+    if (buf_ptr >= ARGS_BUFFER_SIZE) {
         printf("Buffer state: %s\r\n", buffer);
 
         error(BUFFER_OVERRUN);
@@ -212,20 +206,20 @@ char get_chr()
             }
         }
 
-        if (buffer_enabled)
+        if (is_buffer_writable) {
             buffer[buf_ptr] = c;
+            buff_right();
+        }
 
         if (linepos < LINE_BUFFER_SIZE - 1) {
             linebuffer[linepos++] = c;
             linebuffer[linepos] = 0;
         }
     } else {
-        if (buffer_enabled)
-            c = buffer[buf_ptr];
+        c = buffer[buf_ptr];
+        buff_right();
     }
 
-    if (buffer_enabled)
-        buff_right();
 
     if (feof(fp))
         eof = 1;

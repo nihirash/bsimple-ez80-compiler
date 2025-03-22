@@ -12,6 +12,7 @@ compiler/bsc
 stdlib/startup.i
 stdlib/src/*.s
 examples/*.s
+examples/**/*.s
 examples/*_post.bs
 native-tools/*.s
 native-tools/test*.*
