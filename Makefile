@@ -1,7 +1,7 @@
-PACKAGES = compiler lib cross-tools examples 
+PACKAGES = compiler lib examples 
 TARGETS = all clean format
 
-default: all
+default: all Learn-bs-in-y-minutes.md
 
 $(TARGETS):
 		for p in $(PACKAGES) ; do $(MAKE) $(FLAGS) -C $$p $@ || break ; done
