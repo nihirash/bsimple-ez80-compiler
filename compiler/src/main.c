@@ -74,6 +74,7 @@ int main(int argc, char **argv)
 
     process_program();
 
+    shutdown_reader();
     close_writer();
 
     return 0;

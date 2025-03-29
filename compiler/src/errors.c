@@ -66,6 +66,7 @@ void error(char code)
     printf("@ line %u \r\n", get_current_line());
     printf("> %s\r\n", linebuffer);
 
+    shutdown_reader();
     close_writer();
 
     exit(1);
