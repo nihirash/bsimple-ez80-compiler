@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 - Alternative startup import - for building MOSlets.
 - `bs.bin` moslet for building binaries in with a single command
 - "Notes of a Madman" - history of creating compiler
+- Flag for automatical run of assembler, when building project using crossbuild system
 
 ### Updated
 
