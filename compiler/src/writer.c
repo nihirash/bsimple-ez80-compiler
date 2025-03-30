@@ -6,6 +6,7 @@
 FILE *code_fp;
 FILE *data_fp;
 
+char source_name[80];
 char filename[80];
 char was_data;
 
@@ -42,9 +43,9 @@ void epilogue()
 void init_writer(char *basefile)
 {
     was_data = 0;
-    sprintf(filename, "%s.s", basefile);
+    sprintf(source_name, "%s.s", basefile);
 
-    code_fp = fopen(filename, "w");
+    code_fp = fopen(source_name, "w");
 
     sprintf(filename, "%s.sdat", basefile);
     data_fp = fopen(filename, "w");

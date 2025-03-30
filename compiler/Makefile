@@ -1,11 +1,12 @@
 SRC := src
 CROSSBIN := bsc
+CROSSFLAGS := -DCROSS -o $(CROSSBIN)
 DEPS := $(wildcard $(SRC)/*.c $(SRC)/*.h)
 SRCS := $(wildcard $(SRC)/*.c)
 include ../Makefile.cross-config
 
 $(CROSSBIN): $(DEPS)
-	$(C) $(SRCS) -o $(CROSSBIN)
+	$(C) $(SRCS) $(CROSSFLAGS)
 
 install: $(CROSSBIN)
 	mkdir -p $(INSTALLDIR)
