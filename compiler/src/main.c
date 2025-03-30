@@ -39,11 +39,13 @@ int main(int argc, char **argv)
 
 
     if (argc < 2) {
-        #ifndef CROSS
+#ifndef CROSS
         printf("\r\n Usage:\r\n %s <input-file>\r\n", argv[0]);
-        #else
-        printf("\r\n Usage:\r\n %s <input-file> [+]\r\n if you'll pass + as second argument(it's optional) - assembler will be called automatically\r\n", argv[0]);
-        #endif
+#else
+        printf
+            ("\r\n Usage:\r\n %s <input-file> [+]\r\n if you'll pass + as second argument(it's optional) - assembler will be called automatically\r\n",
+             argv[0]);
+#endif
 
         return 0;
     }
@@ -81,7 +83,7 @@ int main(int argc, char **argv)
     shutdown_reader();
     close_writer();
 
-    #ifdef CROSS
+#ifdef CROSS
     if (argv[2] && argv[2][0] == '+') {
         char cmd[90];
         sprintf(cmd, "ez80asm %s", source_name);
@@ -89,7 +91,7 @@ int main(int argc, char **argv)
         printf("\r\nCalling ez80asm\r\n");
         system(cmd);
     }
-    #endif
+#endif
 
     return 0;
 }

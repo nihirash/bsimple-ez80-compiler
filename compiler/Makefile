@@ -14,7 +14,7 @@ install: $(CROSSBIN)
 	cp $(CROSSBIN) $(INSTALLDIR)
 
 format:
-	$(INDENT) $(IDENTFLAGS) $(DEPS)
+	$(INDENT) $(IDENTFLAGS) $(DEPS) || echo "Autoformating not available - skipped"
 	rm -f $(SRC)/*.c~ $(SRC)/*.h~
 
 all: install
