@@ -2,7 +2,6 @@
 
 enum {
     Keyword,
-    Constant,
     Glob,
     Auto,
     Parameter,
