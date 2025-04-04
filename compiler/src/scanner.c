@@ -16,10 +16,11 @@ char current_function[MAX_TOKEN_SIZE];
 char l_value[MAX_TOKEN_SIZE];
 
 char local_label_counter = 0;
+int local_var_offset = 0;
 
 void process_fun_call(char *fun_to_call);
 void process_statement(char token);
-void process_block(char is_fun);
+void process_block();
 char process_expression();
 
 void process_for_loop()
@@ -54,7 +55,7 @@ void process_for_loop()
     jump(label_for_condition);
 
     write_label(label_for_body);
-    process_block(0);
+    process_block();
     jump(label_increment);
 
     write_label(label_done);
@@ -66,7 +67,7 @@ void process_repeat_until()
     Symbol *s;
 
     strcpy(label1, make_label());
-    process_block(0);
+    process_block();
 
     if (get_token() != Id)
         error(UNEXPECTED_SYMBOL);
@@ -135,6 +136,7 @@ void global_var()
 void process_local_vars()
 {
     int offset = 0;
+
     char token;
     int size = 1;
     char name[MAX_TOKEN_SIZE];
@@ -169,12 +171,13 @@ void process_local_vars()
             token = get_token();
         }
 
+        local_var_offset += size * WORD_SIZE;
         offset += size * WORD_SIZE;
 
-        if (offset > 127)
+        if (local_var_offset > 127)
             error(TOO_FAR_ON_STACK);
 
-        register_var(name, -offset);
+        register_var(name, -local_var_offset);
 
         if (token == Comma) {
             token = get_token();
@@ -712,6 +715,9 @@ void process_statement(char token)
             }
         } else {
             switch (lookup_symbol(current_token)->offset) {
+            case K_Var:
+                process_local_vars();
+                break;
             case K_For:
                 process_for_loop();
                 break;
@@ -728,7 +734,7 @@ void process_statement(char token)
                     error(UNEXPECTED_SYMBOL);
 
                 strcpy(label, check_condition());
-                process_block(0);
+                process_block();
                 write_label(label);
                 break;
             case K_While:
@@ -737,7 +743,7 @@ void process_statement(char token)
                 if (process_expression() != Begin)
                     error(UNEXPECTED_SYMBOL);
                 strcpy(label, check_condition());
-                process_block(0);
+                process_block();
                 jump(label2);
                 write_label(label);
                 break;
@@ -772,25 +778,13 @@ void process_statement(char token)
     return;
 }
 
-void process_block(char is_fun)
+void process_block()
 {
 
     char token;
     Symbol *s;
 
     token = get_token();
-
-    if (is_fun) {
-        if (token == Id) {
-            s = lookup_symbol(current_token);
-            while (s && s->type == Keyword && s->offset == K_Var) {
-                process_local_vars();
-
-                token = get_token();
-                s = lookup_symbol(current_token);
-            }
-        }
-    }
 
     while (token != End) {
         process_statement(token);
@@ -837,11 +831,13 @@ void process_function()
         }
     }
 
+    local_var_offset = 0;
+
     if (get_token() != Begin)
         error(EXPECTED_BLOCK);
 
     // Function body!
-    process_block(1);
+    process_block();
 
     fun_tail(current_function);
     locals_end();

@@ -1,4 +1,4 @@
-# BSimple. Notes of a Madman, or How I Decided to Write a Compiler.
+# BSimple. Diary of a Madman, or How I Decided to Write a Compiler.
 
 ## First Steps
 

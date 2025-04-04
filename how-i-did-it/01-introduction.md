@@ -1,4 +1,4 @@
-# BSimple. Notes of a Madman, or How I Decided to Write a Compiler.
+# BSimple. Diary of a Madman, or How I Decided to Write a Compiler.
 
 ## Introduction
 Every programmer should write their own programming language at some point. Once, as a joke, I posted on Twitter that if my tweet got 666 likes, I would create my own Lisp-like programming language in Scala. I wrote it as a joke and didn’t think about the consequences—until my phone started blowing up with notifications, and I realized I was in trouble.
