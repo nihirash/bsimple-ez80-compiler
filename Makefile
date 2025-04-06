@@ -13,3 +13,4 @@ docs: Learn-bs-in-y-minutes.md
 
 agon:
 	$(MAKE) -f Makefile.agondev -C compiler
+	$(MAKE) -C native-tools

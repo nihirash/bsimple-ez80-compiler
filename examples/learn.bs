@@ -26,7 +26,9 @@ var zero;
 var global_var1;
 var global_var2;
 # Arrays can be defined here too. This array will be 30 bytes or 10 elements
-var global_array[10], buffer[173]; 
+var global_array[10];
+
+var buffer[173]; 
 
 # You can define your own functions in any order
 

@@ -10,7 +10,7 @@ Current code generator outputs assembly listing that can be built with [agon-ez8
 
 ## Documentation
 
-Currently, project have no proper documentation but we have [Learn B Simple in Y minutes](Learn-bs-in-y-minutes.md) page that tries cover almost all language.
+Currently, we have [Learn B Simple in Y minutes](Learn-bs-in-y-minutes.md) page that tries cover almost all language and [simple reference manual](reference.md).
 
 ## Usage
 

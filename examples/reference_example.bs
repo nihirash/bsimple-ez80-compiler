@@ -1,0 +1,23 @@
+import "../lib/startup.i"
+import "../lib/stdlib.i"
+
+sum(a, b) {
+    return a + b;
+}
+
+main()
+{
+    puts("Welcome to BSimple!\r\n");
+
+    printf("Sum: %d\r\n", sum(5, 7));
+
+    var name[30];
+    var key;
+
+    puts("Enter your name: ");
+    key = readline(&name, 30);
+
+    if key == 13 {
+        printf("\r\nHello, %s\r\n", &name);
+    }
+}

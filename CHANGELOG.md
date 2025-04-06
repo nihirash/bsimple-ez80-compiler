@@ -11,13 +11,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 - Including `.bs` files during compilation(using `include` keyword)
 - Alternative startup import - for building MOSlets.
 - `bs.bin` moslet for building binaries in with a single command
-- "Notes of a Madman" - history of creating compiler
+- "Diary of a Madman" - history of creating compiler
 - Flag for automatical run of assembler, when building project using crossbuild system
+- Shell script for automated release preparation
+- Minimal reference manual added
 
 ### Updated
 
 - Building configuration for crossbuild moved to Makefile.cross-config 
 - `for` loop checks condition before execution of loop's body now
+- You can define local variables not only as first statement in function but in any place in block
 
 ### Fixed
 
