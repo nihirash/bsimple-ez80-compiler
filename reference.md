@@ -1,57 +1,5 @@
 # BSimple Language Reference 
 
-- [BSimple Language Reference](#bsimple-language-reference)
-  - [Core Concepts](#core-concepts)
-    - [Key Features](#key-features)
-    - [Data Model](#data-model)
-      - [Machine Word](#machine-word)
-      - [Literals](#literals)
-    - [Comments](#comments)
-  - [Operations](#operations)
-    - [File Inclusion and External Resources](#file-inclusion-and-external-resources)
-      - [`import`](#import)
-      - [`include`](#include)
-      - [`incbin`](#incbin)
-    - [Variables](#variables)
-      - [Global Variables](#global-variables)
-      - [Local Variables](#local-variables)
-    - [Expressions and Operators](#expressions-and-operators)
-      - [Arithmetic](#arithmetic)
-      - [Bitwise Operators](#bitwise-operators)
-      - [Memory Access](#memory-access)
-      - [Arrays](#arrays)
-      - [Comparisons](#comparisons)
-    - [String Literals](#string-literals)
-      - [Behavior](#behavior)
-      - [Implications](#implications)
-      - [Example](#example)
-    - [Control Flow](#control-flow)
-      - [`if` Statement](#if-statement)
-      - [`while` Loop](#while-loop)
-      - [`for` Loop](#for-loop)
-      - [`repeat` / `until`](#repeat--until)
-      - [`label` / `goto`](#label--goto)
-    - [Functions](#functions)
-      - [Definition](#definition)
-      - [No Return](#no-return)
-      - [Local Variables](#local-variables-1)
-    - [Built-in Functions](#built-in-functions)
-      - [Math](#math)
-  - [Standard Library](#standard-library)
-    - [Output](#output)
-    - [String Manipulation](#string-manipulation)
-  - [System Functions](#system-functions)
-  - [Number Parsers](#number-parsers)
-  - [File I/O](#file-io)
-    - [File Operations](#file-operations)
-    - [Utilities](#utilities)
-  - [Entry Point: `main(argc, argv)` or `main()`](#entry-point-mainargc-argv-or-main)
-    - [Command-Line Arguments](#command-line-arguments)
-    - [Syntax](#syntax)
-    - [Example](#example-1)
-  - [Limitations](#limitations)
-  - [Example Program](#example-program)
-
 ---
 
 ## Core Concepts
@@ -87,11 +35,13 @@
 
 ### Comments
 
-- Only **single-line comments** are supported
+- No **mutli-line comments** are supported
 - Begin with `#` and continue to the end of the line
 
 ```bsimple
 # This is a comment
+
+fun_call(arg1); # Function will be called and this is a comment
 ```
 
 ---
@@ -140,7 +90,7 @@ var buffer[128];  # 128 * 3 = 384 bytes
 
 #### Local Variables
 
-Declared inside functions with `var`. Max: **40 entries** (stack-based).
+Declared inside functions with `var`. Max: **40 entries** (stack-based) per function.
 
 ```bsimple
 function()
@@ -189,7 +139,7 @@ p = &a;
 
 #### Comparisons
 
-Return `-1` if true, `0` if false:
+Return `0` if false and any another value threaded as true(build-in functions are using value `-1` cause it represented as `$ffffff` value and can be used as mask in evaluations):
 
 ```bsimple
 a = b > c;
@@ -292,13 +242,11 @@ hello()
 }
 ```
 
-#### Local Variables
-
-Maximum: **40 stack-based** variables per function
-
 ---
 
 ### Built-in Functions
+
+This functions are included in `lib/startup.i` or `lib/moslet.i`
 
 #### Math
 
@@ -309,17 +257,10 @@ Maximum: **40 stack-based** variables per function
 - `udiv(a, b)` - Unsigned division
 - `swap(&a, &b)` - Swap two memory cells
 
----
-
-##  Standard Library
-
-Located in `lib/stdlib.i`
-
 ### Output
 
-This functions are included in `lib/startup.i`
-
-- `puts(ptr)` - Print string (fast, without formatting)
+- `putc(c)` - Prints single character. Can be used for text output or for VDP commands
+- `puts(ptr)` - Print string (fast, without formatting). Any ZERO-terminated string can be used for this routine(including VDP commands that doesn't use zeros as value).
 - `printf(fmt, ...)` - Formatted print
   - `%d` Decimal
   - `%x` Hex
@@ -328,6 +269,14 @@ This functions are included in `lib/startup.i`
   - `%c` Character
   - `%s` String (pointer)
   - `%%` Literal `%`
+- `printn(number, base)` - prints number with specified base(used as subroutine in printf but can be used directly)
+- `printx(n)` - print number as hex. value
+
+---
+
+##  Standard Library
+
+Located in `lib/stdlib.i`
 
 ### String Manipulation
 
@@ -348,23 +297,29 @@ This functions are included in `lib/startup.i`
 - `sleep(sec)` - Delay in seconds
 - `sleepf(frames)` - Delay in frames
 - `gotoxy(x, y)` - Move cursor
-- `putc(ch)` - Print character
 - `set_cursor_mode(mode)` - Show/hide cursor
 - `use_graphics_cursor()` / `use_text_cursor()` - Cursor type
 - `beep()` - Make some noise
 - `play_note(ch, vol, freq, dur)` - Sound tone
 - `readline(ptr, size)` - reads line using MOS routine. Returns key what was used for finishing(enter or ESC)
+- `exec(cmd)` - execute MOS commad. Example: 
+```bsimple
+  # ... skipped
+  exec("ls");
+  # ... skipped
+```
 
+**Important note:** You cannot execute programs or batch files using `exec` call from usual application(cause they're using the same memory pages as your application) but You can execute them from MOSlets. As example You can check [BSimple native builder](native-tools/bs.bs) sources.
 
 ## Number Parsers
 
 Convert string to numeric value:
 
 ```bsimple
-parse_bin("1010")   
-parse_oct("123")    
-parse_dec("-42")    
-parse_hex("FF")     
+x = parse_bin("1010");
+y = parse_oct("123");
+z = parse_dec("-42");
+some_hex = parse_hex("FF");
 ```
 
 ---
@@ -375,11 +330,7 @@ Located in `lib/files.i`
 
 ### File Operations
 
-```bsimple
-fp = fopen("file.txt", "w");
-fputs(fp, "text");
-fclose(fp);
-```
+Example that covers all operations located [here](examples/files.bs)
 
 ### Utilities
 
@@ -422,9 +373,10 @@ Each argument string is automatically stored as a global string literal and pass
 ```bsimple
 import "../lib/startup.i"
 
-main(argc, argv) {  
+main(argc, argv) {
     if argc == 0 {
         puts("No arguments\r\n");
+
         exit();
     }
 
@@ -434,6 +386,7 @@ main(argc, argv) {
     i = 0;
     while i < argc {
         printf(" [ *argv -> %d ] = `%s`\r\n", i, [ *argv -> i ]);
+
         i = i + 1;
     }
 }
@@ -443,39 +396,64 @@ If your program does not require arguments, you can still use a simple `main()` 
 
 ---
 
-## Limitations
+## Creating Your Own Libraries in Assembly for BSimple
 
-- **No operator precedence**: Evaluate expressions left-to-right
-- **No dynamic allocation**
-- **No user-defined structures**
-- **Stack limited to 40 local variables**
+BSimple allows seamless integration of external routines written in assembly language. This enables you to write performance-critical, low-level functions—such as device drivers, math routines, or system calls—and call them directly from BSimple code after importing them using the `import` keyword.
 
----
+Assembly routines intended for use with BSimple must follow a specific calling convention to ensure compatibility with the runtime environment, particularly the way BSimple handles function arguments and local variables.
 
-## Example Program
+### Calling Convention and Stack Handling
 
-```bsimple
-import "../lib/startup.i"
-import "../lib/stdlib.i"
+BSimple uses the `IX` register as the base pointer for local variables and function arguments. Therefore, it is critical to preserve the `IX` register in any custom assembly routine to avoid corrupting the execution environment.
 
-sum(a, b) {
-    return a + b;
-}
+#### General Rules
+* Always preserve IX: Save and restore it at the beginning and end of your routine.
+* Arguments are passed on the stack, and can be accessed using offsets from IX.
+* Return values (if any) must be stored in the HL register.
+* Function names must begin with a single underscore `_`
 
-main()
-{
-    puts("Welcome to BSimple!\r\n");
+#### Stack Layout
 
-    printf("Sum: %d\r\n", sum(5, 7));
+When a BSimple function calls an external routine, the stack is arranged as follows:
 
-    var name[30];
-    var key;
+```
+IX + 0 : return address (3 bytes)
+IX + 3 : old IX (3 bytes)
+IX + 6 : first argument (3 bytes)
+IX + 9 : second argument (3 bytes)
+...     (additional arguments)
+```
 
-    puts("Enter your name: ");
-    key = readline(&name, 30);
+#### Example
 
-    if key == 13 {
-        printf("\r\nHello, %s\r\n", &name);
-    }
-}
+This is an example implementation of the readline function, which takes two arguments:
+ * A pointer to the buffer
+ * A maximum buffer size
+  
+It returns the terminating key code in HL.
+
+```assembly
+_readline:
+  push ix
+  ld ix, 0
+  add ix, sp
+
+;; Loading buffer pointer(first argument)
+  ld hl, (ix + 6)
+;; Loading buffer size(second argument)
+  ld bc, (ix + 9)
+  ld e, %101
+  ld a, __mos_editline
+  rst.lil $08
+
+;; Cleaning HL
+  or a 
+  sbc hl, hl
+
+;; HL = A, return value
+  ld l, a
+  
+  ld sp, ix
+  pop ix
+  ret
 ```
