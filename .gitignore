@@ -19,3 +19,4 @@ native-tools/test*.*
 examples/arcade/
 lib/*.i
 .vscode/
+*.exe
