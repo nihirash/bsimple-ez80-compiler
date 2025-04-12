@@ -1,6 +1,15 @@
+#include "config.h"
+
 /// @brief              Initialize source code reading
 /// @param filename     File from source code should be read
 void init_reader(char *filename);
+
+/// @brief              Shutdown source code reading
+void shutdown_reader();
+
+/// @brief              Include source code from another file
+/// @param filename     Filename(can contain path)
+void include_file(char *filename);
 
 /// @brief              Character that will be returned on next get_chr() instead of reading file 
 extern char poked;
@@ -32,7 +41,14 @@ char rewind_buffer(unsigned int rewind_ptr);
 extern int buf_ptr;
 /// @brief              Flag that indicates is buffered mode enabled or we should continue processing file
 extern char is_buffered;
+/// @brief              Should we populate arguments buffer?
+extern char is_buffer_writable;
+
 /// @brief              Buffer - size can be configured in config.h
 extern char buffer[];
 
-void clean_buffer();
+/// @brief              Additional information if error messages
+extern char linebuffer[LINE_BUFFER_SIZE];
+
+/// @brief              Prepares buffer for argument parsing
+void prepare_buffer();

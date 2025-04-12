@@ -25,8 +25,9 @@ You can use also heximal values as long as decial prefix for hex values is `$`(f
 # Startup and application header should be imported in main
 # file
 import "../lib/startup.i"
-import "../lib/stdlib.i"
-import "../lib/files.i"
+
+# You can include BSimple source code from another file during compilation
+include "imports.bi"
 
 # You can also include binary files into your program(or text files)
 # It will be included with label "source"
@@ -38,7 +39,9 @@ var zero;
 var global_var1;
 var global_var2;
 # Arrays can be defined here too. This array will be 30 bytes or 10 elements
-var global_array[10], buffer[173]; 
+var global_array[10];
+
+var buffer[173]; 
 
 # You can define your own functions in any order
 

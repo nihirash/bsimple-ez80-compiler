@@ -1,0 +1,4 @@
+C := cc
+INSTALLDIR := ~/bin/
+INDENT := gindent
+IDENTFLAGS := -kr -ts1

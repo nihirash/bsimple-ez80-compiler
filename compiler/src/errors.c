@@ -4,6 +4,7 @@
 #include "errors.h"
 #include "reader.h"
 #include "writer.h"
+#include "token.h"
 
 void error(char code)
 {
@@ -17,7 +18,7 @@ void error(char code)
         printf("Unexpected end of file! ");
         break;
     case UNEXPECTED_SYMBOL:
-        printf("Unexpected symbol! ");
+        printf("Unexpected symbol!");
         break;
     case OPEN_FILE_ISSUE:
         printf("Cannot open file! ");
@@ -49,13 +50,23 @@ void error(char code)
     case TOO_FAR_ON_STACK:
         printf("Trying allocate too far on stack! ");
         break;
+    case BUFFER_OVERRUN:
+        printf
+            ("Buffer overrun! Increase ARGS_BUFFER_SIZE in compiler's config or reduce arguments list lenght!");
+        break;
+    case FILESTACK_OVERRUN:
+        printf
+            ("File stack overrun! Increase FILESTACK_DEPTH in compiler's config or reduce depth of including sources!");
+        break;
     default:
         printf("Unknown error happens ");
         break;
     }
 
     printf("@ line %u \r\n", get_current_line());
+    printf("> %s\r\n", linebuffer);
 
+    shutdown_reader();
     close_writer();
 
     exit(1);

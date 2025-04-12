@@ -244,7 +244,7 @@ void bit_xor()
 void mul_ptr()
 {
     write_code("\tpush hl\n\tpop bc\n\tadd hl,hl\n\tadd hl,bc\n");
-    return;   
+    return;
 }
 
 char *string_literal()
@@ -299,8 +299,7 @@ char *check_condition()
 {
     build_label();
 
-    sprintf(buf, "\tld de,0\n\tor a\n\tsbc hl,de\n\tjp z,%s\n",
-            new_label);
+    sprintf(buf, "\tld de,0\n\tor a\n\tsbc hl,de\n\tjp z,%s\n", new_label);
 
     write_code(buf);
 

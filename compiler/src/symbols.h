@@ -2,7 +2,6 @@
 
 enum {
     Keyword,
-    Constant,
     Glob,
     Auto,
     Parameter,
@@ -19,6 +18,7 @@ enum {
     K_For,
     K_Repeat,
     K_Until,
+    K_Include,
 };
 
 typedef struct {

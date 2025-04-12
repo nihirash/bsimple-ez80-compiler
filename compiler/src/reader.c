@@ -8,13 +8,20 @@ int line_number = 1;
 
 FILE *fp;
 
+char filestack_position;
+FILE *filestack[FILESTACK_DEPTH];
+
 char poked = 0;
 char eof = 0;
 
 char buffer[ARGS_BUFFER_SIZE];
 
+char linepos;
+char linebuffer[LINE_BUFFER_SIZE];
+
 int buf_ptr;
 char is_buffered;
+char is_buffer_writable;
 
 
 void init_reader(char *filename)
@@ -22,20 +29,63 @@ void init_reader(char *filename)
     printf("Processing file: %s\r\n", filename);
 
     is_buffered = 0;
+    is_buffer_writable = 0;
     line_number = 1;
     poked = 0;
     eof = 0;
+    filestack_position = 0;
 
     fp = fopen(filename, "r");
+    filestack[filestack_position] = fp;
+
+    linepos = 0;
+    linebuffer[linepos] = 0;
 
     if (!fp)
         error(OPEN_FILE_ISSUE);
 }
 
-void clean_buffer()
+void shutdown_reader()
+{
+    for (int i = 0; i <= filestack_position; i++) {
+        if (filestack[i]) {
+            fclose(filestack[i]);
+        }
+    }
+}
+
+void include_file(char *filename)
+{
+    filestack_position++;
+
+    if (filestack_position >= FILESTACK_DEPTH) {
+        error(FILESTACK_OVERRUN);
+    }
+
+    fp = fopen(filename, "r");
+
+    if (!fp)
+        error(OPEN_FILE_ISSUE);
+
+    filestack[filestack_position] = fp;
+}
+
+void filestack_pop()
+{
+    printf("File done!\r\n");
+    fclose(fp);
+    filestack_position--;
+
+    fp = filestack[filestack_position];
+}
+
+void prepare_buffer()
 {
     for (int i = 0; i < ARGS_BUFFER_SIZE; i++)
         buffer[i] = 0;
+
+    buffer[0] = '(';
+    buf_ptr = 1;
 }
 
 void buff_left()
@@ -61,8 +111,10 @@ void buff_right()
 {
     buf_ptr++;
 
-    if (buf_ptr == ARGS_BUFFER_SIZE) {
-        buf_ptr = 0;
+    if (buf_ptr >= ARGS_BUFFER_SIZE) {
+        printf("Buffer state: %s\r\n", buffer);
+
+        error(BUFFER_OVERRUN);
     }
 }
 
@@ -117,7 +169,7 @@ char rewind_buffer(unsigned int rewind_ptr)
         }
 
 
-        if (buf_ptr == rewind_ptr) {
+        if (buf_ptr == rewind_ptr || buf_ptr == 0) {
             is_last = 1;
             break;
         }
@@ -144,15 +196,30 @@ char get_chr()
 
 
     if (!is_buffered) {
+      retry:
         if (!fread(&c, 1, 1, fp)) {
-            eof = 1;
+            if (filestack_position == 0) {
+                eof = 1;
+            } else {
+                filestack_pop();
+                goto retry;
+            }
         }
-        buffer[buf_ptr] = c;
+
+        if (is_buffer_writable) {
+            buffer[buf_ptr] = c;
+            buff_right();
+        }
+
+        if (linepos < LINE_BUFFER_SIZE - 1) {
+            linebuffer[linepos++] = c;
+            linebuffer[linepos] = 0;
+        }
     } else {
         c = buffer[buf_ptr];
+        buff_right();
     }
 
-    buff_right();
 
     if (feof(fp))
         eof = 1;
@@ -163,6 +230,8 @@ char get_chr()
 
 
     if (c == 10) {
+        linebuffer[0] = 0;
+        linepos = 0;
         line_number++;
     }
 

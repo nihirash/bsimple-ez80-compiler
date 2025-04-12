@@ -1,0 +1,7 @@
+import "../../lib/startup.i"
+
+include "additional.bs"
+
+main() {
+    test();
+}

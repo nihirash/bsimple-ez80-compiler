@@ -1,7 +1,7 @@
-PACKAGES = compiler lib examples
+PACKAGES = compiler lib examples 
 TARGETS = all clean format
 
-default: all
+default: all Learn-bs-in-y-minutes.md
 
 $(TARGETS):
 		for p in $(PACKAGES) ; do $(MAKE) $(FLAGS) -C $$p $@ || break ; done
@@ -13,3 +13,7 @@ docs: Learn-bs-in-y-minutes.md
 
 agon:
 	$(MAKE) -f Makefile.agondev -C compiler
+	$(MAKE) -C native-tools
+
+windows:
+	$(MAKE) -f Makefile.mingw -C compiler

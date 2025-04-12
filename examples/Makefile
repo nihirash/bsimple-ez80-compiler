@@ -1,16 +1,18 @@
 SRCS := $(wildcard *.bs)
 BUILT := $(SRCS:.bs=.s)
 ASSEMBLED := $(SRCS:.bs=.bin)
+BSIMPLE := bsc
+ASM := ez80asm
 
 %.s: %.bs
-		bsc $<
+		$(BSIMPLE) $<
 
 %.bin: %.s
-		ez80asm $<
-
+		$(ASM) $<
+		
 all: $(ASSEMBLED)
 
 clean:
-		rm -f $(ASSEMBLED)
+		rm -f $(ASSEMBLED) *.s
 
 format:

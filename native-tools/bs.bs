@@ -1,0 +1,56 @@
+# BSimple builder
+# ===============
+#
+# (c) 2024 Aleksandr Sharikhin
+# 
+# This MOSLET simplifies build process on Agon directly
+# It allows you get resulting binary file just in one command call 
+
+import "../lib/moslet.i"
+import "../lib/stdlib.i"
+import "../lib/files.i"
+
+# Base filename(without extension)
+var basename[40];
+# source code with added extension
+var source[41];
+
+main(argc, argv) {
+    var fp, txt_ptr;
+
+    puts("BSimple builder\r\n(c) 2025 Aleksandr Sharikhin\r\n\r\n");
+
+    if argc == 0 {
+        puts("Usage:\r\n bs <filename>\r\n\r\n");
+
+        exit();
+    }
+
+    fclose(0);
+
+    txt_ptr = strstr(*argv, ".bs");
+
+    if txt_ptr {
+        *txt_ptr = 0;
+    }
+
+    strcpy(&basename, *argv);
+    strcpy(&source, *argv);
+    strcat(&source, ".bs");
+
+    # Check for source existance 
+    if fexists(&source) == 0 {
+        printf("Cannot open file: %s!\r\n", &source);
+
+        exit();        
+    }
+
+    # Writting build script
+    fp = fopen("build.txt", "w");
+    fprintf(fp, "bsc %s\r\nez80asm %s.s %s.bin\r\n", &source, &basename, &basename);
+    fclose(fp);
+    # Executing it
+    exec("exec build.txt");
+    # And removing
+    delete("build.txt");
+}

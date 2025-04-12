@@ -1,4 +1,4 @@
-PACKAGES =  startup stdlib files arcade printer
+PACKAGES =  startup stdlib files arcade printer moslet
 TARGETS = all clean
 
 $(TARGETS):

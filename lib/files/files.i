@@ -149,7 +149,6 @@ __mos_hl_call:
   add ix, sp
 
   ld hl, (ix + 6)
-
   rst.lil $08
 
   or a

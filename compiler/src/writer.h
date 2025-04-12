@@ -16,3 +16,6 @@ void write_data(char *s);
 /// @brief              Writes single character to data segment of code
 /// @param c 
 void write_data_char(char c);
+
+/// @brief              File name of resulting source file
+extern char source_name[80];

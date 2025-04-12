@@ -1,9 +1,9 @@
 SRC := src
-CROSSBIN := bsc
+CROSSBIN := bsc.exe
 CROSSFLAGS := -DCROSS -o $(CROSSBIN)
 DEPS := $(wildcard $(SRC)/*.c $(SRC)/*.h)
 SRCS := $(wildcard $(SRC)/*.c)
-include ../Makefile.cross-config
+include ../Makefile.mingw-config
 
 $(CROSSBIN): $(DEPS)
 	$(C) $(SRCS) $(CROSSFLAGS)

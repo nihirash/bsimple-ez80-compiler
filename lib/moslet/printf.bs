@@ -1,0 +1,108 @@
+# Formatted print(on screen)
+#
+# Support next formatters: 
+#  * %s - string
+#  * %c - character
+#  * %d - decimal
+#  * %o - oct
+#  * %b - binary
+#  * %x - hex
+printf(ptr, x1) {
+	var cur_char, p;
+
+	cur_char = *ptr & 255;
+	p = &x1;
+
+	while cur_char {
+		if cur_char != '%' {
+			putc(cur_char);
+		}
+
+		if cur_char == '%' {
+			ptr = ptr + 1;
+			cur_char = *ptr & 255;
+
+			if cur_char == 's' {
+				puts(*p);
+				p = p + 3;
+			}
+
+			if cur_char == 'c' {
+				putc(*p & 255);
+				p = p + 3;
+			}
+
+			if cur_char == 'd' {
+				printn(*p, 10);
+				p = p + 3;
+			}
+
+			if cur_char == 'o' {
+				printn(*p, 8);
+				p = p + 3;
+			}
+
+			if cur_char == 'b' {
+				printn(*p, 2);
+				p = p + 3;
+			}
+
+			if cur_char == 'x' {
+				printx(*p);
+
+				p = p + 3;
+			}
+
+			if cur_char == '%' {
+				putc('%');
+			}
+
+		}
+
+		ptr = ptr + 1;
+		cur_char = *ptr & 255;
+	}
+}
+
+# Print number in specified base
+# n is number to print
+# b is base of number
+printn(n, b) {
+  var a;
+
+  if n == 16 {
+    return printx(n);
+  }
+	
+  if n < 0 {
+    n = neg(n);
+    putc('-');
+  }
+
+  a = n / b;
+
+  if a {
+    printn(a, b);
+  }
+
+  putc( 
+    n % b + '0'
+  );
+}
+
+# Prints number as hex value
+printx(n) {
+	var a, p;
+
+	p = "0123456789ABCDEF";
+
+	a = udiv(n, 16);
+
+	if a {
+		printx(a);
+	}
+
+	p = n & 15 + p;
+
+	putc( *p );
+}

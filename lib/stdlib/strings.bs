@@ -6,7 +6,7 @@ strstr(big, small) {
     size = strlen(small);
     ptr = big;
     end = ptr + strlen(big) - size;
-    while ptr < end {
+    while ptr <= end {
 
         if strstarts(ptr, small) {
             return ptr;

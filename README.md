@@ -10,7 +10,7 @@ Current code generator outputs assembly listing that can be built with [agon-ez8
 
 ## Documentation
 
-Currently, project have no proper documentation but we have [Learn B Simple in Y minutes](Learn-bs-in-y-minutes.md) page that tries cover almost all language.
+Currently, we have [Learn B Simple in Y minutes](Learn-bs-in-y-minutes.md) page that tries cover almost all language and [simple reference manual](reference.md).
 
 ## Usage
 
@@ -18,6 +18,9 @@ Currently, project have no proper documentation but we have [Learn B Simple in Y
  * Grab latest version from [RELEASES](https://github.com/nihirash/b-simple-ez80-compiler/releases) page
  * Extract archive to root of SD card
  * Libraries will be in `/BSimple/lib` directory, examples in `/BSimple/examples`
+ 
+#### Manual building process:
+
  * For building single source file call `bsc <filename>` it will produce file with same name but `.s` extension
  * Build binary using [ez80asm](https://github.com/envenomator/agon-ez80asm) 
 
@@ -30,13 +33,22 @@ ez80asm console.s
 console
 ```
 
-You can also create some kind of `build.txt` files that will automate compilation and assembly steps.
+#### Using preprocessor/build tool
+
+For building source file call `bs <filename>` - it will build concatenated sources into single file, call `bsc` compiler and `ez80asm` assembler - so you'll can get single binary just in one call
+
+For example: 
+
+```
+bs console
+console
+```
 
 ### For Linux/macOS
  * Clone repository
  * Build entire project using root Makefile
 
-It should install binary in your `~/bin`(or correct `compiler/Makefile` file with your output path)
+It should install binary in your `~/bin`(or correct `Makefile.cross-config` file with your output path)
 
 ## Development
 
